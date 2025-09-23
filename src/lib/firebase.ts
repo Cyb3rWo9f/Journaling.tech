@@ -11,12 +11,6 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 }
 
-// Debug: Log the configuration (remove in production)
-console.log('Firebase Config:', {
-  ...firebaseConfig,
-  apiKey: firebaseConfig.apiKey ? 'SET' : 'NOT SET'
-})
-
 // Validate configuration
 if (!firebaseConfig.apiKey || !firebaseConfig.authDomain || !firebaseConfig.projectId) {
   console.error('Firebase configuration is incomplete. Please check your .env.local file.')

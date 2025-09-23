@@ -20,7 +20,6 @@ import {
   Compass,
   Activity
 } from 'lucide-react'
-import { WeatherData, weatherService } from '@/services/weather'
 import { freeWeatherService, FreeWeatherData } from '@/services/freeWeatherService'
 import { freeGoogleLocationService, FreeLocationData } from '@/services/freeGoogleLocation'
 import { Card, CardContent } from '@/components/ui/Card'

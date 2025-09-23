@@ -9,58 +9,31 @@ interface OpenAIResponse {
 }
 
 class OpenAIService {
-  private apiKey: string | undefined
-  private endpoint: string | undefined
-  private deploymentName: string | undefined
-  private apiVersion: string | undefined
-
   constructor() {
-    // Azure OpenAI Configuration from Environment Variables
-    this.apiKey = process.env.NEXT_PUBLIC_AZURE_OPENAI_API_KEY
-    this.endpoint = process.env.NEXT_PUBLIC_AZURE_OPENAI_ENDPOINT
-    this.deploymentName = process.env.NEXT_PUBLIC_AZURE_OPENAI_DEPLOYMENT
-    this.apiVersion = process.env.NEXT_PUBLIC_AZURE_OPENAI_API_VERSION || '2024-12-01-preview'
+    // No client-side configuration needed - using secure API routes
   }
 
   private async makeRequest(messages: Array<{ role: string; content: string }>): Promise<string> {
-    if (!this.apiKey || !this.endpoint || !this.deploymentName) {
-      throw new Error('Azure OpenAI configuration missing. Please check your environment variables.')
-    }
-
     try {
-      // Azure OpenAI endpoint URL
-      const url = `${this.endpoint}/openai/deployments/${this.deploymentName}/chat/completions?api-version=${this.apiVersion}`
-      
-      console.log('🤖 Making request to Azure OpenAI:', url)
-      
-      const response = await fetch(url, {
+      // Use our secure API route instead of calling Azure OpenAI directly
+      const response = await fetch('/api/openai', {
         method: 'POST',
         headers: {
-          'api-key': this.apiKey, // Azure uses 'api-key' instead of 'Authorization'
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          messages,
-          max_tokens: 2000, // Increased for more detailed insights
-          temperature: 0.7, // Good balance of creativity and consistency
-          presence_penalty: 0.1, // Encourages diverse insights
-          frequency_penalty: 0.1, // Reduces repetition
-          top_p: 0.95, // Azure OpenAI parameter for better responses
-          stream: false
-        }),
+        body: JSON.stringify({ messages }),
       })
 
       if (!response.ok) {
         const errorText = await response.text()
-        console.error('Azure OpenAI API error:', response.status, errorText)
-        throw new Error(`Azure OpenAI API error: ${response.status} - ${errorText}`)
+        console.error('OpenAI API error:', response.status, errorText)
+        throw new Error(`OpenAI API error: ${response.status} - ${errorText}`)
       }
 
       const data: OpenAIResponse = await response.json()
-      console.log('✅ Azure OpenAI response received successfully')
       return data.choices[0]?.message?.content || ''
     } catch (error) {
-      console.error('Error calling Azure OpenAI API:', error)
+      console.error('Error calling OpenAI API:', error)
       throw error
     }
   }

@@ -21,32 +21,27 @@ export interface FreeWeatherData {
 }
 
 class FreeWeatherService {
-  private openWeatherApiKey: string | null = null
-
   constructor() {
-    this.openWeatherApiKey = process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY || null
     console.log('🌤️ Free Weather Service initialized')
   }
 
   /**
-   * Try OpenWeatherMap first, then fallback to free alternatives
+   * Try secure API route first, then fallback to free alternatives
    */
   async getWeatherWithFallback(latitude: number, longitude: number): Promise<FreeWeatherData> {
-    // 1. Try OpenWeatherMap (if API key is available)
-    if (this.openWeatherApiKey && this.openWeatherApiKey !== 'your_openweather_api_key_here') {
-      try {
-        console.log('🌤️ Trying OpenWeatherMap API...')
-        const weather = await this.getFromOpenWeatherMap(latitude, longitude)
-        if (weather) {
-          console.log('✅ OpenWeatherMap API successful')
-          return weather
-        }
-      } catch (error) {
-        console.warn('❌ OpenWeatherMap API failed:', error)
+    // 1. Try secure API route first
+    try {
+      console.log('🌤️ Trying secure weather API route...')
+      const weather = await this.getFromSecureRoute(latitude, longitude)
+      if (weather) {
+        console.log('✅ Secure weather API successful')
+        return weather
       }
+    } catch (error) {
+      console.warn('❌ Secure weather API failed:', error)
     }
 
-    // 2. Try free weather API
+    // 2. Try free weather API as fallback
     try {
       console.log('🌤️ Trying free weather API...')
       const weather = await this.getFromFreeAPI(latitude, longitude)
@@ -63,15 +58,19 @@ class FreeWeatherService {
     return this.getMockWeatherData(latitude, longitude)
   }
 
-  private async getFromOpenWeatherMap(latitude: number, longitude: number): Promise<FreeWeatherData | null> {
-    if (!this.openWeatherApiKey) return null
-
-    const response = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${this.openWeatherApiKey}&units=metric`
-    )
+  /**
+   * Use secure API route to get weather data
+   */
+  private async getFromSecureRoute(latitude: number, longitude: number): Promise<FreeWeatherData | null> {
+    const response = await fetch(`/api/weather?lat=${latitude}&lon=${longitude}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
 
     if (!response.ok) {
-      throw new Error(`OpenWeatherMap API error: ${response.status} ${response.statusText}`)
+      throw new Error(`Weather API error: ${response.status} ${response.statusText}`)
     }
 
     const data = await response.json()

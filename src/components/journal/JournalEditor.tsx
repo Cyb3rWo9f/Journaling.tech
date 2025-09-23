@@ -333,8 +333,7 @@ export function JournalEditor({ entry, onSave }: JournalEditorProps) {
             {/* Content Editor */}
             <div className="relative bg-white dark:bg-[#0b0f13]">
               <TextareaAutosize
-                placeholder="✨ Start writing your thoughts... Use #hashtags to organize your memories. What happened today? What are you grateful for? 🌟"
-                value={content}
+                placeholder="Begin documenting your thoughts and experiences. Use hashtags to categorize your entries for better organization. Reflect on the events of your day, your accomplishments, challenges you faced, lessons learned, and moments of gratitude. Consider what brought you joy, what you would like to improve, and your goals for tomorrow."
                 onChange={handleContentChange}
                 minRows={10}
                 className="w-full p-4 sm:p-6 lg:p-8 bg-white dark:bg-[#0b0f13] border-none outline-none resize-none text-gray-800 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-500 leading-relaxed text-base sm:text-lg font-['Space_Grotesk'] tracking-wide focus:placeholder:text-gray-400 dark:focus:placeholder:text-gray-600 transition-colors"
