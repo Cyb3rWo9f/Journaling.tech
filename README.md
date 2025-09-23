@@ -331,7 +331,7 @@ src/
 
 <div align="center">
 
-**MIT License** - Feel free to use this project for personal or commercial purposes
+**[MIT License](./LICENSE)** - Feel free to use this project for personal or commercial purposes
 
 ### 🙏 **Acknowledgments**
 
