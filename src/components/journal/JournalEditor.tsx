@@ -1,9 +1,9 @@
 'use client'
 
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import { motion } from 'framer-motion'
-import { Save, Calendar, Smile, Meh, Frown, Heart, Zap, AlertCircle, PenTool, Laugh, Coffee, Sun, Cloud, Star, Sparkles, ThumbsUp, Music, Target, Lightbulb, Battery, Flame, Angry, CloudRain } from 'lucide-react'
+import { Save, Calendar, Smile, Meh, Frown, Heart, Zap, AlertCircle, PenTool, Laugh, Coffee, Sun, Cloud, Star, Sparkles, ThumbsUp, Music, Target, Lightbulb, Battery, Flame, Angry, CloudRain, Trophy, Award } from 'lucide-react'
 import TextareaAutosize from 'react-textarea-autosize'
 import { useJournal } from '@/context/JournalContext'
 import { JournalEntry } from '@/types'
@@ -20,6 +20,7 @@ interface JournalEditorProps {
 export function JournalEditor({ entry, onSave }: JournalEditorProps) {
   const router = useRouter()
   const { createEntry, updateEntry, autoSave, entries } = useJournal()
+  const [title, setTitle] = useState(entry?.title || '')
   const [content, setContent] = useState(entry?.content || '')
   const [mood, setMood] = useState<JournalEntry['mood']>(entry?.mood)
   const [isSaving, setIsSaving] = useState(false)
@@ -32,10 +33,12 @@ export function JournalEditor({ entry, onSave }: JournalEditorProps) {
   // Update state when entry prop changes (for edit mode)
   useEffect(() => {
     if (entry) {
+      setTitle(entry.title || '')
       setContent(entry.content || '')
       setMood(entry.mood)
     } else {
       // Reset for new entry
+      setTitle('')
       setContent('')
       setMood(undefined)
     }
@@ -74,6 +77,99 @@ export function JournalEditor({ entry, onSave }: JournalEditorProps) {
 
   // Get current tags from content
   const currentTags = extractHashtags(content)
+
+  // Calculate streak data from entries
+  const streakData = useMemo(() => {
+    if (!entries || entries.length === 0) {
+      return {
+        currentStreak: 0,
+        longestStreak: 0,
+        badges: [
+          { icon: <Star size={12} className="text-gray-400" />, label: 'First Entry' },
+          { icon: <Flame size={12} className="text-gray-400" />, label: '7-Day Streak' },
+          { icon: <Trophy size={12} className="text-gray-400" />, label: '30-Day Streak' },
+        ]
+      }
+    }
+
+    // Get unique dates from entries (normalized to date only)
+    const entryDates = entries.map(e => {
+      const date = new Date(e.createdAt || e.date)
+      date.setHours(0, 0, 0, 0)
+      return date.getTime()
+    })
+    const uniqueDates = [...new Set(entryDates)].sort((a, b) => b - a)
+
+    // Calculate current streak
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    const yesterday = new Date(today)
+    yesterday.setDate(yesterday.getDate() - 1)
+
+    let currentStreak = 0
+    let checkDate = today.getTime()
+
+    // Check if there's an entry today or yesterday to start counting
+    if (uniqueDates.includes(today.getTime()) || uniqueDates.includes(yesterday.getTime())) {
+      // Start from today if entry exists, otherwise from yesterday
+      if (!uniqueDates.includes(today.getTime())) {
+        checkDate = yesterday.getTime()
+      }
+
+      while (uniqueDates.includes(checkDate)) {
+        currentStreak++
+        checkDate -= 24 * 60 * 60 * 1000 // Go back one day
+      }
+    }
+
+    // Calculate longest streak
+    let longestStreak = 0
+    let tempStreak = 1
+
+    const sortedDates = [...uniqueDates].sort((a, b) => a - b)
+    for (let i = 1; i < sortedDates.length; i++) {
+      const diff = sortedDates[i] - sortedDates[i - 1]
+      if (diff === 24 * 60 * 60 * 1000) {
+        tempStreak++
+      } else {
+        longestStreak = Math.max(longestStreak, tempStreak)
+        tempStreak = 1
+      }
+    }
+    longestStreak = Math.max(longestStreak, tempStreak)
+
+    // Generate badges based on achievements
+    const totalEntries = entries.length
+    const badges = []
+
+    // First Entry badge
+    if (totalEntries >= 1) {
+      badges.push({ icon: <Star size={12} className="text-yellow-500" />, label: 'First Entry' })
+    } else {
+      badges.push({ icon: <Star size={12} className="text-gray-400" />, label: 'First Entry' })
+    }
+
+    // 7-Day Streak badge
+    if (longestStreak >= 7 || currentStreak >= 7) {
+      badges.push({ icon: <Flame size={12} className="text-orange-500" />, label: '7-Day Streak' })
+    } else {
+      badges.push({ icon: <Flame size={12} className="text-gray-400" />, label: '7-Day Streak' })
+    }
+
+    // 30-Day Streak badge
+    if (longestStreak >= 30 || currentStreak >= 30) {
+      badges.push({ icon: <Trophy size={12} className="text-purple-500" />, label: '30-Day Streak' })
+    } else {
+      badges.push({ icon: <Trophy size={12} className="text-gray-400" />, label: '30-Day Streak' })
+    }
+
+    // 10 Entries badge
+    if (totalEntries >= 10) {
+      badges.push({ icon: <Award size={12} className="text-blue-500" />, label: '10 Entries' })
+    }
+
+    return { currentStreak, longestStreak, badges }
+  }, [entries])
 
   // Handle content change with hashtag detection
   const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -147,6 +243,7 @@ export function JournalEditor({ entry, onSave }: JournalEditorProps) {
     console.log('🔄 Attempting to save entry...')
     const tags = extractHashtags(content)
     const cleanContent = removeHashtagsFromContent(content)
+    console.log('Title:', title)
     console.log('Content length:', cleanContent.length)
     console.log('Extracted tags:', tags)
     console.log('Entry exists:', !!entry)
@@ -155,24 +252,24 @@ export function JournalEditor({ entry, onSave }: JournalEditorProps) {
     try {
       if (entry) {
         // Update existing entry
-        const updatedEntry = { ...entry, content: cleanContent, mood, tags }
+        const updatedEntry = { ...entry, title: title.trim(), content: cleanContent, mood, tags }
         await updateEntry(updatedEntry)
         console.log('✅ Entry updated successfully:', entry.id)
         onSave?.(updatedEntry)
       } else {
-        // Create new entry - no title needed
-        const savedEntry = await createEntry('', cleanContent, mood, tags)
+        // Create new entry with title
+        const savedEntry = await createEntry(title.trim(), cleanContent, mood, tags)
         console.log('✅ Entry created successfully:', savedEntry.id)
         onSave?.(savedEntry)
       }
 
       setLastSaved(new Date().toLocaleTimeString())
       
-      // Small delay to show success message, then navigate
+      // Quick navigation - AI insights will generate on Insights page
       setTimeout(() => {
         console.log('🔄 Redirecting to entries page...')
         router.push('/entries')
-      }, 1000)
+      }, 300)
       
     } catch (error) {
       console.error('❌ Failed to save entry:', error)
@@ -201,241 +298,271 @@ export function JournalEditor({ entry, onSave }: JournalEditorProps) {
     { value: 'melancholy', icon: Music, label: 'Melancholy', color: 'text-slate-500' },
     { value: 'sad', icon: Frown, label: 'Sad', color: 'text-blue-500' },
     { value: 'frustrated', icon: Angry, label: 'Frustrated', color: 'text-red-600' },
-    { value: 'overwhelmed', icon: CloudRain, label: 'Swamped', color: 'text-gray-600' },
+    { value: 'overwhelmed', icon: CloudRain, label: 'Overwhelmed', color: 'text-gray-600' },
   ] as const
 
   return (
-    <div className="w-full grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6 px-2 sm:px-0">
+    <div className="w-full grid grid-cols-1 lg:grid-cols-4 gap-2 lg:gap-3">
       {/* Main Editor - Takes 3 columns on large screens, full width on mobile */}
-      <div className="lg:col-span-3 space-y-4 sm:space-y-6">
+      <div className="lg:col-span-3 space-y-2">
         {/* Main Editor Card */}
-  <div className="overflow-hidden shadow-2xl bg-white dark:bg-[#0b0f13] border border-gray-200 dark:border-gray-800 rounded-3xl">
-          <div className="p-0">
-            {/* Header */}
-            <div className="p-4 sm:p-6 lg:p-8 border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-[#0b0f13]">
-              <div className="flex flex-col space-y-4 sm:space-y-6">
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-3 sm:space-y-0">
-                  <div className="flex items-center space-x-3">
-                    <div className="p-1.5 bg-gradient-to-r from-blue-500/20 to-purple-500/20 dark:from-blue-400/20 dark:to-purple-400/20 rounded-lg shadow-md backdrop-blur-sm">
-                      <Calendar size={16} className="text-blue-500 dark:text-blue-400" />
+        <div className="overflow-hidden bg-[var(--surface-elevated)] rounded-xl shadow-lg shadow-black/5">
+          {/* Header with gradient accent */}
+          <div className="relative">
+            {/* Top accent bar */}
+            <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-[var(--primary)] via-[var(--secondary)] to-[var(--primary)]" />
+            
+            <div className="p-2.5 sm:p-3 lg:p-4">
+              <div className="flex flex-col gap-2">
+                {/* Top Row: Date & Save Button */}
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <div className="p-1.5 bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] rounded-lg">
+                      <Calendar size={14} className="text-white" />
                     </div>
                     <div>
-                      <p className="text-xs font-medium text-gray-600 dark:text-gray-400">
-                        {entry ? 'Editing Entry' : "Today's Entry"}
+                      <p className="text-[9px] font-bold text-[var(--primary)] uppercase tracking-wider">
+                        {entry ? 'Edit Entry' : 'New Entry'}
                       </p>
-                      <p className="text-base font-bold text-gray-800 dark:text-gray-200 font-['Space_Grotesk']">{formatDate(entry?.date || new Date())}</p>
+                      <p className="text-sm font-bold text-[var(--text-primary)] font-en">
+                        {formatDate(entry?.date || new Date())}
+                      </p>
                     </div>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 w-full sm:w-auto">
+                  <div className="flex items-center gap-2 w-full sm:w-auto">
                     {lastSaved && (
-                      <motion.div
-                        initial={{ scale: 0.8, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        className="flex items-center space-x-2 bg-gradient-to-r from-green-500/20 to-emerald-500/20 dark:from-green-400/20 dark:to-emerald-400/20 px-3 py-1.5 rounded-full border border-green-200/50 dark:border-green-600/50 text-xs backdrop-blur-sm"
-                      >
-                        <motion.div 
-                          className="w-1.5 h-1.5 bg-green-500 dark:bg-green-400 rounded-full"
-                          animate={{ scale: [1, 1.2, 1] }}
-                          transition={{ duration: 2, repeat: Infinity }}
-                        />
-                        <span className="font-medium text-green-700 dark:text-green-300 font-['Space_Grotesk']">Saved at {lastSaved}</span>
-                      </motion.div>
+                      <div className="hidden sm:flex items-center gap-1.5 bg-emerald-500/10 border border-emerald-500/25 px-2 py-1 rounded-md">
+                        <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full" />
+                        <span className="text-[9px] font-bold text-emerald-600 dark:text-emerald-400">
+                          Auto-saved <span className="font-en">{lastSaved}</span>
+                        </span>
+                      </div>
                     )}
-                    <motion.button
+                    <button
                       onClick={handleSave}
-                      disabled={isSaving}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className={`flex items-center justify-center space-x-2 sm:space-x-3 font-bold text-sm sm:text-base w-full sm:w-auto px-6 py-3 sm:py-4 rounded-xl transition-all duration-300 shadow-lg backdrop-blur-sm ${
-                        isSaving
-                          ? 'bg-gray-400 dark:bg-[#1f2326] text-white cursor-not-allowed'
-                          : 'bg-gradient-to-r from-blue-500 to-purple-500 dark:from-blue-600 dark:to-purple-600 text-white hover:shadow-xl hover:from-blue-600 hover:to-purple-600 dark:hover:from-blue-500 dark:hover:to-purple-500 border border-blue-300/50 dark:border-blue-600/50'
+                      disabled={isSaving || !content.trim()}
+                      className={`group flex items-center justify-center gap-1.5 font-bold text-[11px] w-full sm:w-auto px-3 py-1.5 rounded-md transition-all duration-200 ${
+                        isSaving || !content.trim()
+                          ? 'bg-[var(--border)] text-[var(--text-muted)] cursor-not-allowed'
+                          : 'bg-gradient-to-r from-[var(--primary)] to-[var(--primary-dark)] text-white shadow-md shadow-[var(--primary)]/25 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]'
                       }`}
-                      aria-label="Save Entry"
                     >
-                      <motion.div
-                        animate={{ rotate: isSaving ? 360 : 0 }}
-                        transition={{ duration: 1, repeat: isSaving ? Infinity : 0, ease: "linear" }}
-                      >
-                        <Save size={16} className="sm:w-5 sm:h-5" />
-                      </motion.div>
-                      <span className="font-['Space_Grotesk'] tracking-wide">{isSaving ? 'Saving...' : 'Save Entry'}</span>
-                    </motion.button>
+                      <Save size={12} className={isSaving ? 'animate-spin' : ''} />
+                      <span>{isSaving ? 'Saving...' : 'Save'}</span>
+                    </button>
                   </div>
                 </div>
 
-                {/* Mood Selector - Enhanced Mobile Design */}
-                <div className="space-y-3">
-                  <div className="flex items-center space-x-3">
-                    <div className="p-1.5 bg-gradient-to-r from-pink-500/20 to-red-500/20 dark:from-pink-400/20 dark:to-red-400/20 rounded-lg shadow-md">
-                      <Heart size={14} className="text-pink-500 dark:text-pink-400" />
-                    </div>
-                    <p className="text-sm font-semibold text-gray-800 dark:text-gray-200 font-['Space_Grotesk']">How are you feeling?</p>
+                {/* Title Input */}
+                <div className="space-y-1.5">
+                  <div className="flex items-center gap-1.5">
+                    <PenTool size={11} className="text-[var(--primary)]" />
+                    <p className="text-[11px] font-bold text-[var(--text-primary)]">Entry Title</p>
+                    <span className="text-[9px] text-[var(--text-muted)]">(optional)</span>
                   </div>
-                  <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 xl:grid-cols-8 gap-2">
+                  <input
+                    type="text"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    placeholder="Give your entry a title..."
+                    className="w-full px-3 py-2 bg-[var(--background)] border border-[var(--border)] rounded-lg text-[var(--text-primary)] placeholder:text-[var(--text-muted)]/60 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/30 focus:border-[var(--primary)] transition-all"
+                  />
+                </div>
+
+                {/* Mood Selector */}
+                <div className="space-y-1.5">
+                  <div className="flex items-center gap-1.5">
+                    <Heart size={11} className="text-pink-500" />
+                    <p className="text-[11px] font-bold text-[var(--text-primary)]">How are you feeling?</p>
+                  </div>
+                  <div className="grid grid-cols-5 sm:grid-cols-10 gap-1">
                     {moodOptions.map(({ value, icon: Icon, label, color }) => (
-                      <motion.button
+                      <button
                         key={value}
-                        whileHover={{ scale: 1.05, y: -1 }}
-                        whileTap={{ scale: 0.95 }}
                         onClick={() => setMood(mood === value ? undefined : value)}
-                        className={`relative flex flex-col items-center justify-center space-y-1 p-2 sm:p-2.5 rounded-xl transition-all duration-300 min-h-[60px] sm:min-h-[65px] ${
+                        className={`group relative flex flex-col items-center justify-center gap-0.5 p-1.5 rounded-md transition-all duration-150 ${
                           mood === value 
-                            ? 'bg-gradient-to-br from-blue-500 to-purple-600 dark:from-blue-600 dark:to-purple-700 text-white shadow-lg transform scale-[1.02] ring-2 ring-purple-400/50 dark:ring-purple-500/50' 
-                            : 'bg-white dark:bg-[#0b0f13] text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-900 hover:shadow-md border border-gray-200 dark:border-gray-700'
+                            ? 'bg-[var(--primary)] text-white scale-105 z-10 shadow-md' 
+                            : 'bg-[var(--background)] hover:bg-[var(--surface-elevated)]'
                         }`}
                       >
-                        <motion.div
-                          animate={{ 
-                            rotate: mood === value ? [0, 5, -5, 0] : 0,
-                            scale: mood === value ? [1, 1.05, 1] : 1
-                          }}
-                          transition={{ 
-                            duration: 0.4, 
-                            repeat: mood === value ? Infinity : 0, 
-                            repeatDelay: 3 
-                          }}
-                          className="flex items-center justify-center"
-                        >
-                          <Icon size={18} className={`${mood === value ? 'text-white' : color} transition-all duration-300`} />
-                        </motion.div>
-                        <span className="text-[8px] sm:text-[9px] md:text-[10px] leading-tight text-center font-medium font-['Space_Grotesk'] tracking-wide">
+                        <Icon size={14} className={mood === value ? 'text-white' : color} />
+                        <span className={`text-[8px] font-semibold leading-none ${mood === value ? 'text-white' : 'text-[var(--text-secondary)]'}`}>
                           {label}
                         </span>
-                        
-                        {/* Active glow effect */}
-                        {mood === value && (
-                          <motion.div
-                            initial={{ scale: 0, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            className="absolute inset-0 rounded-xl bg-purple-500/20 blur-sm -z-10"
-                          />
-                        )}
-                        
-                        {/* Hover ripple effect */}
-                        <motion.div
-                          className="absolute inset-0 rounded-2xl bg-blue-500/10 dark:bg-blue-400/10"
-                          initial={{ scale: 0, opacity: 0 }}
-                          whileTap={{ 
-                            scale: 1.2, 
-                            opacity: [0, 0.3, 0],
-                            transition: { duration: 0.4 }
-                          }}
-                        />
-                      </motion.button>
+                      </button>
                     ))}
                   </div>
                 </div>
               </div>
             </div>
-
-            {/* Content Editor */}
-            <div className="relative bg-white dark:bg-[#0b0f13]">
-              <TextareaAutosize
-                placeholder="Begin documenting your thoughts and experiences. Use hashtags to categorize your entries for better organization. Reflect on the events of your day, your accomplishments, challenges you faced, lessons learned, and moments of gratitude. Consider what brought you joy, what you would like to improve, and your goals for tomorrow."
-                onChange={handleContentChange}
-                minRows={10}
-                className="w-full p-4 sm:p-6 lg:p-8 bg-white dark:bg-[#0b0f13] border-none outline-none resize-none text-gray-800 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-500 leading-relaxed text-base sm:text-lg font-['Space_Grotesk'] tracking-wide focus:placeholder:text-gray-400 dark:focus:placeholder:text-gray-600 transition-colors"
-                style={{ 
-                  fontSize: '16px',
-                  lineHeight: '1.7',
-                  fontWeight: '400'
-                }}
-              />
-
-              {/* Hashtag Suggestions */}
-              {showHashtagSuggestions && getHashtagSuggestions(hashtagQuery).length > 0 && (
-                <div 
-                  className="absolute top-16 left-3 z-50 bg-white dark:bg-[#0f1214] border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg max-w-xs"
-                >
-                  <div className="p-2">
-                    <div className="text-xs text-gray-500 dark:text-gray-400 mb-2 px-2">
-                      Hashtag suggestions
-                    </div>
-                    {getHashtagSuggestions(hashtagQuery).map((tag, index) => (
-                      <button
-                        key={tag}
-                        onClick={() => insertHashtag(tag)}
-                        className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors flex items-center gap-2"
-                      >
-                        <span className="text-blue-500">#</span>
-                        <span className="text-gray-900 dark:text-gray-100">{tag}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Word Count */}
-              {content.trim() && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="absolute bottom-4 right-4 bg-[var(--surface)]/80 backdrop-blur-sm px-3 py-1 rounded-lg border border-[var(--border)] sm:static sm:mt-2 sm:ml-0 sm:w-full sm:text-center"
-                >
-                  <span className="text-xs text-[var(--text-secondary)]">
-                    {content.split(' ').filter(word => word.length > 0).length} words
-                  </span>
-                </motion.div>
-              )}
-
-              {/* Tags Display */}
-              {currentTags.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="mt-4 p-4 bg-gradient-to-r from-[var(--primary)]/5 to-[var(--secondary)]/5 rounded-xl border border-[var(--border)]"
-                >
-                  <div className="flex items-center space-x-2 mb-3">
-                    <div className="p-1 bg-gradient-to-br from-[var(--primary)]/20 to-[var(--secondary)]/20 rounded-lg">
-                      <Target size={14} className="text-[var(--primary)]" />
-                    </div>
-                    <span className="text-sm font-medium text-[var(--text-primary)]">Tags in this entry:</span>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {currentTags.map((tag, index) => (
-                      <motion.span
-                        key={tag}
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: index * 0.1 }}
-                        className="inline-flex items-center px-3 py-1 bg-gradient-to-r from-[var(--primary)]/10 to-[var(--secondary)]/10 text-[var(--primary)] rounded-full text-sm font-medium border border-[var(--primary)]/20"
-                      >
-                        #{tag}
-                      </motion.span>
-                    ))}
-                  </div>
-                  <p className="text-xs text-[var(--text-secondary)] mt-2 opacity-70">
-                    💡 Hashtags will be saved as tags and removed from your journal content automatically
-                  </p>
-                </motion.div>
-              )}
-            </div>
           </div>
+
+          {/* Content Editor */}
+          <div className="relative bg-[var(--background)]">
+            <textarea
+              value={content}
+              placeholder="Begin your journal entry here. This is your private sanctuary for self-reflection, personal growth, and meaningful documentation of your life's journey. Take a moment to pause and reflect on your day. What experiences shaped your thoughts today? What emotions did you navigate through? Writing about your feelings helps process them and gain clarity. Use #hashtags to organize your entries effectively — try #gratitude, #goals, #reflection, #work, or #health. Consider exploring: What made today meaningful? What challenges did you face? What are you grateful for? What lessons did today teach you? What intentions do you want to set for tomorrow? Remember, there's no right or wrong way to journal. Write freely and let your thoughts flow naturally."
+              onChange={handleContentChange}
+              rows={12}
+              className="w-full p-4 bg-transparent border-none outline-none resize-none text-[var(--text-primary)] placeholder:text-[var(--text-muted)]/60 text-base leading-relaxed selection:bg-[var(--primary)]/20 scrollbar-thin overflow-y-auto h-[320px]"
+              style={{ fontSize: '15px', lineHeight: '1.7' }}
+            />
+
+            {/* Hashtag Suggestions */}
+            {showHashtagSuggestions && getHashtagSuggestions(hashtagQuery).length > 0 && (
+              <div className="absolute top-24 left-5 z-50 bg-[var(--surface-elevated)] rounded-2xl shadow-2xl shadow-black/10 max-w-xs overflow-hidden backdrop-blur-xl">
+                <div className="p-2">
+                  <div className="text-[10px] text-[var(--text-muted)] uppercase tracking-widest font-bold mb-2 px-3 py-1.5 flex items-center gap-2">
+                    <Sparkles size={10} className="text-[var(--secondary)]" />
+                    Suggestions
+                  </div>
+                  {getHashtagSuggestions(hashtagQuery).map((tag) => (
+                    <button
+                      key={tag}
+                      onClick={() => insertHashtag(tag)}
+                      className="w-full text-left px-4 py-3 text-sm hover:bg-gradient-to-r hover:from-[var(--primary)]/10 hover:to-[var(--secondary)]/10 rounded-xl transition-all flex items-center gap-3 group"
+                    >
+                      <span className="w-6 h-6 rounded-lg bg-[var(--primary)]/10 flex items-center justify-center text-[var(--primary)] font-bold group-hover:scale-110 group-hover:bg-[var(--primary)] group-hover:text-white transition-all">#</span>
+                      <span className="text-[var(--text-primary)] font-semibold">{tag}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Word Count Badge */}
+            {content.trim() && (
+              <div className="absolute bottom-2 right-3 flex items-center gap-2">
+                <span className="text-[10px] text-[var(--text-muted)] bg-[var(--surface-elevated)] px-2 py-1 rounded">
+                  <span className="font-en">{content.split(' ').filter(word => word.length > 0).length}</span> words
+                </span>
+              </div>
+            )}
+          </div>
+
+          {/* Tags Display */}
+          {currentTags.length > 0 && (
+            <div className="p-3 bg-[var(--primary)]/5">
+              <div className="flex items-center gap-2 mb-2">
+                <Target size={12} className="text-[var(--primary)]" />
+                <span className="text-xs font-bold text-[var(--text-primary)]">Tags</span>
+                <span className="text-[10px] text-white bg-[var(--primary)] px-1.5 py-0.5 rounded font-bold">{currentTags.length}</span>
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                {currentTags.map((tag, index) => (
+                  <span
+                    key={tag}
+                    className="inline-flex items-center px-2 py-1 bg-[var(--primary)]/10 text-[var(--primary)] rounded text-xs font-semibold border border-[var(--primary)]/20"
+                  >
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Sidebar - Takes 1 column on large screens, full width on mobile */}
-      <div className="lg:col-span-1 space-y-4 sm:space-y-6">
-      {/* Mobile-Enhanced Widgets */}
-      <div className="space-y-4">
-        {/* Weather Widget - Responsive */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-        >
-          {/* Mobile weather widget - with more space from bottom navigation */}
-          <div className="md:hidden mb-32">
-            <MobileWeatherWidget className="h-auto max-h-80" />
+      {/* Sidebar - Weather Widget */}
+      <div className="lg:col-span-1 lg:-mt-3">
+        <div className="space-y-2">
+          {/* Mobile weather widget */}
+          <div className="md:hidden mb-4">
+            <MobileWeatherWidget className="h-auto" />
+          </div>
+          {/* Mobile Streak Card */}
+          <div className="lg:hidden bg-[var(--surface-elevated)] rounded-xl p-3 mb-24">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="p-1.5 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg">
+                  <Flame size={14} className="text-white" />
+                </div>
+                <span className="text-xs font-bold text-[var(--text-primary)]">Your Streaks</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="text-center">
+                  <div className="text-lg font-bold text-orange-500 font-en">{streakData.currentStreak}</div>
+                  <div className="text-[9px] text-[var(--text-secondary)]">Current</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-lg font-bold text-[var(--primary)] font-en">{streakData.longestStreak}</div>
+                  <div className="text-[9px] text-[var(--text-secondary)]">Best</div>
+                </div>
+                <div className="flex items-center gap-1">
+                  {streakData.badges.slice(0, 3).map((badge, index) => (
+                    <div 
+                      key={index}
+                      className="p-1 bg-[var(--background)] rounded-md"
+                    >
+                      {badge.icon}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
           {/* Desktop weather widget */}
           <div className="hidden md:block">
             <WeatherWidget size="sm" />
           </div>
-        </motion.div>
-      </div>
+          
+          {/* Writing Tips Card - Desktop Only */}
+          <div className="hidden lg:block bg-[var(--surface-elevated)] rounded-xl p-2.5">
+            <div className="flex items-center gap-1.5 mb-2">
+              <div className="p-1 bg-gradient-to-br from-amber-500 to-orange-500 rounded-md">
+                <Lightbulb size={10} className="text-white" />
+              </div>
+              <span className="text-[11px] font-bold text-[var(--text-primary)]">Quick Tips</span>
+            </div>
+            <div className="space-y-1">
+              <div className="flex items-start gap-1.5 text-[10px] text-[var(--text-secondary)]">
+                <div className="w-1 h-1 rounded-full bg-[var(--primary)] mt-1 shrink-0" />
+                <span>Use #hashtags to organize entries</span>
+              </div>
+              <div className="flex items-start gap-1.5 text-[10px] text-[var(--text-secondary)]">
+                <div className="w-1 h-1 rounded-full bg-[var(--secondary)] mt-1 shrink-0" />
+                <span>Select a mood to track feelings</span>
+              </div>
+              <div className="flex items-start gap-1.5 text-[10px] text-[var(--text-secondary)]">
+                <div className="w-1 h-1 rounded-full bg-emerald-500 mt-1 shrink-0" />
+                <span>Write daily to build a streak</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Streak & Badges Card - Desktop Only */}
+          <div className="hidden lg:block bg-[var(--surface-elevated)] rounded-xl p-2.5">
+            <div className="flex items-center gap-1.5 mb-2">
+              <div className="p-1 bg-gradient-to-br from-orange-500 to-red-500 rounded-md">
+                <Flame size={10} className="text-white" />
+              </div>
+              <span className="text-[11px] font-bold text-[var(--text-primary)]">Your Streaks</span>
+            </div>
+            <div className="grid grid-cols-2 gap-1.5 mb-2">
+              <div className="bg-[var(--background)] rounded-md p-1.5 text-center">
+                <div className="text-base font-bold text-orange-500 font-en">{streakData.currentStreak}</div>
+                <div className="text-[9px] text-[var(--text-secondary)]">Current</div>
+              </div>
+              <div className="bg-[var(--background)] rounded-md p-1.5 text-center">
+                <div className="text-base font-bold text-[var(--primary)] font-en">{streakData.longestStreak}</div>
+                <div className="text-[9px] text-[var(--text-secondary)]">Best</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-1 justify-center">
+              {streakData.badges.map((badge, index) => (
+                <div 
+                  key={index}
+                  className="p-1 bg-[var(--background)] rounded-md"
+                  title={badge.label}
+                >
+                  {badge.icon}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )

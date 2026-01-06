@@ -37,6 +37,17 @@ export interface EntrySummary {
   createdAt: string;
 }
 
+export interface EntryHoldStatus {
+  id: string;
+  entryId: string;
+  reason: 'api_error' | 'rate_limit' | 'timeout' | 'invalid_response' | 'unknown';
+  errorMessage: string;
+  errorCode?: string;
+  retryCount: number;
+  lastAttempt: string;
+  createdAt: string;
+}
+
 export interface EmotionalPattern {
   emotion: string;
   frequency: number;
@@ -80,13 +91,17 @@ export interface User {
   createdAt: string;
 }
 
+export type Language = 'en' | 'hi';
+
 export interface UserProfile {
   id: string;
   userId: string;
+  username?: string;
   displayName: string;
   bio?: string;
   location?: string;
   avatar?: string;
+  language?: Language; // 'en' for English, 'hi' for Hindi
   currentStreak: number;
   longestStreak: number;
   totalEntries: number;

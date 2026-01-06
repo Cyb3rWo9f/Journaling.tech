@@ -186,15 +186,15 @@ export function WeatherWidget({ size = 'md', showDetails = true, className = '' 
   }
 
   const sizeClasses = {
-    sm: 'p-3',
-    md: 'p-4',
-    lg: 'p-6'
+    sm: 'p-2.5',
+    md: 'p-3',
+    lg: 'p-4'
   }
 
   const textSizes = {
-    sm: { temp: 'text-lg', title: 'text-sm', details: 'text-xs' },
-    md: { temp: 'text-2xl', title: 'text-base', details: 'text-sm' },
-    lg: { temp: 'text-3xl', title: 'text-lg', details: 'text-base' }
+    sm: { temp: 'text-base', title: 'text-xs', details: 'text-[10px]' },
+    md: { temp: 'text-xl', title: 'text-sm', details: 'text-xs' },
+    lg: { temp: 'text-2xl', title: 'text-base', details: 'text-sm' }
   }
 
   if (error) {
@@ -248,35 +248,33 @@ export function WeatherWidget({ size = 'md', showDetails = true, className = '' 
       animate={{ opacity: 1, y: 0 }}
       className={className}
     >
-      <Card variant="modern" className="glossy-card border-2 border-white/20 overflow-hidden smooth-glow h-[600px]">
-        <CardContent className={`${sizeClasses[size]} h-full flex flex-col`}>
+      <Card variant="modern" className="glossy-card border border-[var(--border)] overflow-hidden">
+        <CardContent className={`${sizeClasses[size]} flex flex-col`}>
           {/* Header */}
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-2">
-              <div className="p-1 bg-[var(--primary)]/10 rounded-lg">
-                <MapPin size={14} className="text-[var(--primary)]" />
-              </div>
-              <span className={`${textSizes[size].details} font-medium text-[var(--text-primary)]`}>
-                {weather.location.city || 'Current Location'}
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-1.5">
+              <MapPin size={12} className="text-[var(--primary)]" />
+              <span className={`${textSizes[size].details} font-medium text-[var(--text-primary)] truncate max-w-[120px] font-en`}>
+                {weather.location.city || 'Location'}
               </span>
             </div>
             <button
               onClick={refreshWeather}
-              className="p-2 hover:bg-[var(--primary)]/10 rounded-full transition-colors"
+              className="p-1.5 hover:bg-[var(--primary)]/10 rounded-lg transition-colors"
               disabled={loading}
             >
-              <RefreshCw size={12} className={`text-[var(--primary)] ${loading ? 'animate-spin' : ''}`} />
+              <RefreshCw size={10} className={`text-[var(--primary)] ${loading ? 'animate-spin' : ''}`} />
             </button>
           </div>
 
           {/* Main Weather Display */}
-          <div className="flex items-center gap-4 mb-4 p-4 bg-gradient-to-r from-[var(--surface)] to-[var(--surface)]/90 rounded-xl border border-[var(--border)]">
-            <WeatherIcon size={size === 'sm' ? 32 : size === 'md' ? 40 : 48} className="text-[var(--primary)]" />
+          <div className="flex items-center gap-3 mb-2.5 p-2.5 bg-[var(--surface)] rounded-lg border border-[var(--border)]">
+            <WeatherIcon size={size === 'sm' ? 24 : size === 'md' ? 28 : 32} className="text-[var(--primary)]" />
             <div>
-              <div className={`${textSizes[size].temp} font-bold text-[var(--text-primary)]`}>
+              <div className={`${textSizes[size].temp} font-bold text-[var(--text-primary)] leading-tight font-en`}>
                 {weather.temperature}°C
               </div>
-              <div className={`${textSizes[size].details} text-[var(--text-secondary)] capitalize`}>
+              <div className={`${textSizes[size].details} text-[var(--text-secondary)] capitalize leading-tight font-en`}>
                 {weather.description}
               </div>
             </div>
@@ -284,160 +282,55 @@ export function WeatherWidget({ size = 'md', showDetails = true, className = '' 
 
           {/* Weather Details */}
           {showDetails && (
-            <div className="space-y-3 flex-1">
-              {/* Temperature Details */}
-              <div className="p-3 bg-gradient-to-r from-[var(--surface)] to-[var(--surface)]/90 rounded-xl border border-[var(--border)]">
-                <h4 className={`${textSizes[size].details} font-semibold text-[var(--text-primary)] mb-3 flex items-center gap-2`}>
-                  <div className="p-1 bg-[var(--primary)]/10 rounded-lg">
-                    <Thermometer size={12} className="text-[var(--primary)]" />
-                  </div>
-                  Temperature & Humidity
-                </h4>
-                <div className="grid grid-cols-2 gap-3 text-[var(--text-secondary)]">
-                  <div className="flex items-center gap-2">
-                    <div>
-                      <span className={`${textSizes[size].details} font-medium`}>
-                        Feels like
-                      </span>
-                      <div className={`${textSizes[size].title} font-semibold text-[var(--text-primary)]`}>
-                        {weather.feelsLike}°C
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div>
-                      <span className={`${textSizes[size].details} font-medium`}>
-                        Humidity
-                      </span>
-                      <div className={`${textSizes[size].title} font-semibold text-[var(--text-primary)]`}>
-                        {weather.humidity}%
-                      </div>
-                    </div>
-                  </div>
+            <div className="space-y-2">
+              {/* Quick Stats Grid */}
+              <div className="grid grid-cols-2 gap-1.5">
+                <div className="p-2 bg-[var(--surface)] rounded-lg border border-[var(--border)]">
+                  <span className={`${textSizes[size].details} text-[var(--text-muted)] block`}>Feels</span>
+                  <span className={`${textSizes[size].title} font-bold text-[var(--text-primary)] font-en`}>{weather.feelsLike}°C</span>
+                </div>
+                <div className="p-2 bg-[var(--surface)] rounded-lg border border-[var(--border)]">
+                  <span className={`${textSizes[size].details} text-[var(--text-muted)] block`}>Humidity</span>
+                  <span className={`${textSizes[size].title} font-bold text-[var(--text-primary)] font-en`}>{weather.humidity}%</span>
                 </div>
               </div>
 
-              {/* Wind & Pressure Details */}
-              <div className="p-3 bg-gradient-to-r from-[var(--surface)] to-[var(--surface)]/90 rounded-xl border border-[var(--border)]">
-                <h4 className={`${textSizes[size].details} font-semibold text-[var(--text-primary)] mb-3 flex items-center gap-2`}>
-                  <div className="p-1 bg-[var(--primary)]/10 rounded-lg">
-                    <Wind size={12} className="text-[var(--primary)]" />
-                  </div>
-                  Wind & Pressure
-                </h4>
-                <div className="grid grid-cols-2 gap-3 text-[var(--text-secondary)]">
-                  <div className="flex items-center gap-2">
-                    <div>
-                      <span className={`${textSizes[size].details} font-medium`}>
-                        Wind Speed
-                      </span>
-                      <div className={`${textSizes[size].title} font-semibold text-[var(--text-primary)]`}>
-                        {weather.windSpeed} m/s
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div>
-                      <span className={`${textSizes[size].details} font-medium`}>
-                        Pressure
-                      </span>
-                      <div className={`${textSizes[size].title} font-semibold text-[var(--text-primary)]`}>
-                        {weather.pressure} hPa
-                      </div>
-                    </div>
-                  </div>
+              {/* Wind & Pressure */}
+              <div className="grid grid-cols-2 gap-1.5">
+                <div className="p-2 bg-[var(--surface)] rounded-lg border border-[var(--border)]">
+                  <span className={`${textSizes[size].details} text-[var(--text-muted)] block`}>Wind</span>
+                  <span className={`${textSizes[size].title} font-bold text-[var(--text-primary)] font-en`}>{weather.windSpeed} m/s</span>
+                </div>
+                <div className="p-2 bg-[var(--surface)] rounded-lg border border-[var(--border)]">
+                  <span className={`${textSizes[size].details} text-[var(--text-muted)] block`}>Pressure</span>
+                  <span className={`${textSizes[size].title} font-bold text-[var(--text-primary)] font-en`}>{weather.pressure}</span>
                 </div>
               </div>
 
-              {/* Additional Weather Information */}
+              {/* Additional Weather Information - Hidden for sm size */}
               {size !== 'sm' && (
-                <div className="p-3 bg-gradient-to-r from-[var(--surface)] to-[var(--surface)]/90 rounded-xl border border-[var(--border)]">
-                  <h4 className={`${textSizes[size].details} font-semibold text-[var(--text-primary)] mb-3 flex items-center gap-2`}>
-                    <div className="p-1 bg-[var(--primary)]/10 rounded-lg">
-                      <Activity size={12} className="text-[var(--primary)]" />
-                    </div>
-                    Additional Details
-                  </h4>
-                  <div className="space-y-2">
-                    {/* Wind Direction */}
-                    {weather.windDirection !== undefined && (
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <Compass size={12} className="text-[var(--primary)]" />
-                          <span className={`${textSizes[size].details} font-medium text-[var(--text-secondary)]`}>
-                            Wind Direction
-                          </span>
-                        </div>
-                        <span className={`${textSizes[size].details} font-semibold text-[var(--text-primary)]`}>
-                          {getWindDirection(weather.windDirection || 0)} ({weather.windDirection}°)
-                        </span>
-                      </div>
-                    )}
-                    
-                    {/* Visibility */}
+                <div className="p-2 bg-[var(--surface)] rounded-lg border border-[var(--border)]">
+                  <div className="grid grid-cols-2 gap-x-3 gap-y-1 text-[var(--text-secondary)]">
                     {weather.visibility !== undefined && weather.visibility > 0 && (
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <Eye size={12} className="text-[var(--primary)]" />
-                          <span className={`${textSizes[size].details} font-medium text-[var(--text-secondary)]`}>
-                            Visibility
-                          </span>
-                        </div>
-                        <span className={`${textSizes[size].details} font-semibold text-[var(--text-primary)]`}>
-                          {weather.visibility} km
-                        </span>
+                        <span className={`${textSizes[size].details}`}>Visibility</span>
+                        <span className={`${textSizes[size].details} font-semibold text-[var(--text-primary)]`}>{weather.visibility}km</span>
                       </div>
                     )}
-
-                    {/* Air Quality */}
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <Activity size={12} className="text-[var(--primary)]" />
-                        <span className={`${textSizes[size].details} font-medium text-[var(--text-secondary)]`}>
-                          Air Quality
-                        </span>
-                      </div>
-                      <span className={`${textSizes[size].details} font-semibold text-[var(--secondary)]`}>
-                        {getAirQualityIndex(weather.humidity, weather.pressure)}
-                      </span>
-                    </div>
-
-                    {/* Comfort Level */}
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <Sunset size={12} className="text-[var(--primary)]" />
-                        <span className={`${textSizes[size].details} font-medium text-[var(--text-secondary)]`}>
-                          Comfort Level
-                        </span>
-                      </div>
-                      <span className={`${textSizes[size].details} font-semibold text-[var(--text-primary)]`}>
-                        {getComfortLevel(weather.temperature, weather.humidity)}
-                      </span>
+                      <span className={`${textSizes[size].details}`}>Air</span>
+                      <span className={`${textSizes[size].details} font-semibold text-[var(--secondary)]`}>{getAirQualityIndex(weather.humidity, weather.pressure)}</span>
                     </div>
                   </div>
                 </div>
               )}
-
-              {/* Weather Summary */}
-              <div className="p-3 bg-gradient-to-r from-[var(--surface)] to-[var(--surface)]/90 rounded-xl border border-[var(--border)]">
-                <h4 className={`${textSizes[size].details} font-semibold text-[var(--text-primary)] mb-2 flex items-center gap-2`}>
-                  <div className="p-1 bg-[var(--primary)]/10 rounded-lg">
-                    <Sun size={12} className="text-[var(--primary)]" />
-                  </div>
-                  Today's Summary
-                </h4>
-                <p className={`${textSizes[size].details} text-[var(--text-secondary)] leading-relaxed`}>
-                  {weather.description.charAt(0).toUpperCase() + weather.description.slice(1)} conditions with {weather.temperature}°C. 
-                  Perfect for journaling your thoughts while staying aware of the weather outside.
-                </p>
-              </div>
             </div>
           )}
 
           {/* Last Updated */}
           {lastUpdated && (
-            <div className="mt-3 pt-2 border-t border-blue-200">
-              <p className="text-xs text-blue-600">
+            <div className="mt-2 pt-1.5 border-t border-[var(--border)]">
+              <p className="text-[10px] text-[var(--text-muted)] font-en">
                 Updated: {lastUpdated}
               </p>
             </div>

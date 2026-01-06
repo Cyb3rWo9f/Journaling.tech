@@ -1,28 +1,60 @@
 <div align="center">
 
-# 🌟 AI Journaling Application
+# ✨ Journaling
 
-*Transform your thoughts into insights with the power of AI*
+### AI-Powered Personal Journaling Platform
 
-[![Next.js](https://img.shields.io/badge/Next.js-13.4.19-black?style=for-the-badge&logo=next.js)](https://nextjs.org)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.1.6-blue?style=for-the-badge&logo=typescript)](https://typescriptlang.org)
-[![Firebase](https://img.shields.io/badge/Firebase-12.3.0-orange?style=for-the-badge&logo=firebase)](https://firebase.google.com)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.3.3-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com)
-[![Azure OpenAI](https://img.shields.io/badge/Azure_OpenAI-GPT--4-green?style=for-the-badge&logo=openai)](https://openai.com)
+*Capture moments, track progress, unlock insights*
 
-**🚀 [Live Demo](https://journling.vercel.app) | 📖 [Documentation](#installation) | 🎯 [Features](#features)**
+[![Next.js](https://img.shields.io/badge/Next.js-16.1-black?style=for-the-badge&logo=next.js)](https://nextjs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?style=for-the-badge&logo=typescript)](https://typescriptlang.org)
+[![Firebase](https://img.shields.io/badge/Firebase-12.3-FFCA28?style=for-the-badge&logo=firebase)](https://firebase.google.com)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.3-06B6D4?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com)
+[![Grok-3](https://img.shields.io/badge/AI-Grok--3-FF6B6B?style=for-the-badge&logo=x)](https://x.ai)
+
+[**🌐 Live Site**](https://journaling.tech) · [**📱 Launch App**](https://app.journaling.tech) · [**📖 Documentation**](#-getting-started)
+
+---
+
+<img src="https://img.shields.io/badge/status-production-success?style=flat-square" alt="Status" />
+<img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square" alt="License" />
+<img src="https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square" alt="PRs Welcome" />
 
 </div>
 
 ---
 
-A modern, intelligent journaling platform that combines personal reflection with AI-powered insights to help you track your thoughts, emotions, and personal growth journey.
+## 📋 Table of Contents
 
-> *"The life of every man is a diary in which he means to write one story, and writes another."* - J.M. Barrie
+- [Overview](#-overview)
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [Architecture](#-architecture)
+- [Getting Started](#-getting-started)
+- [Environment Variables](#-environment-variables)
+- [Project Structure](#-project-structure)
+- [Security](#-security)
+- [Deployment](#-deployment)
+- [Contributing](#-contributing)
+- [License](#-license)
 
-## 🎯 Why Choose AI Journaling?
+---
 
-Transform your daily reflections into powerful insights with cutting-edge AI technology. Whether you're seeking emotional clarity, tracking personal growth, or building a consistent journaling habit, our platform adapts to your unique journey.
+## 🎯 Overview
+
+**Journaling** is a modern, AI-powered personal journaling platform that transforms daily reflections into meaningful insights. Powered by **Grok-3** AI, it analyzes your entries to identify emotional patterns, track personal growth, and provide personalized suggestions.
+
+### Why Journaling?
+
+| Problem | Solution |
+|---------|----------|
+| Journaling feels like a chore | Beautiful, distraction-free writing experience |
+| Hard to see patterns in your thoughts | AI-powered pattern recognition & weekly insights |
+| Difficult to maintain consistency | Streak tracking, achievements, and gamification |
+| Privacy concerns with cloud journals | Firebase security rules + encrypted data |
+| Generic journaling apps | Personalized AI therapist (Dr. Maya Chen) insights |
+
+---
 
 ## ✨ Features
 
@@ -31,330 +63,294 @@ Transform your daily reflections into powerful insights with cutting-edge AI tec
 <td width="50%">
 
 ### 📝 Smart Journal Editor
-- 🎨 **Rich Text Editor** - Responsive, auto-resizing interface
-- 😊 **Mood Tracking** - 20+ emotional states with intuitive icons
-- 🏷️ **Smart Hashtags** - Intelligent tag suggestions & organization
-- 💾 **Auto-Save Magic** - Never lose a thought again
-- 🌤️ **Weather Context** - Automatic environmental data capture
+- **Rich Text Editor** with auto-resize
+- **20+ Mood Options** with intuitive icons
+- **Smart Hashtags** for organization
+- **Auto-Save** - never lose a thought
+- **Weather Integration** - automatic context
 
 </td>
 <td width="50%">
 
 ### 🧠 AI-Powered Insights
-- 🔍 **Deep Analysis** - Personalized insights for every entry
-- 📊 **Weekly Summaries** - Comprehensive emotional & thematic analysis
-- 🔄 **Pattern Recognition** - Identify trends & recurring themes
-- 📈 **Growth Tracking** - Monitor your personal development
-- 💡 **Smart Suggestions** - Actionable feedback & motivation
+- **Deep Entry Analysis** - personalized feedback
+- **Weekly Summaries** - emotional patterns
+- **Pattern Recognition** - identify trends
+- **Growth Tracking** - monitor progress
+- **Actionable Suggestions** - practical advice
 
 </td>
 </tr>
-
 <tr>
 <td width="50%">
 
-### 📊 Analytics & Visualization
-- 📈 **Mood Analytics** - Beautiful emotional pattern charts
-- ☁️ **Tag Cloud** - Visualize your most frequent topics
-- 🔥 **Streak Tracking** - Gamified consistency monitoring
-- ⏰ **Timeline View** - Navigate your journal history
-- 🏆 **Achievement System** - Unlock milestones & badges
+### 📊 Analytics & Progress
+- **Mood Trends** visualization
+- **Tag Cloud** for topic insights
+- **Streak Tracking** with fire 🔥
+- **Achievement Badges** system
+- **Timeline Navigation**
 
 </td>
 <td width="50%">
 
-### 🔐 Security & Privacy
-- 🔒 **Google OAuth** - Enterprise-grade authentication
-- ☁️ **Firebase Backend** - Reliable, scalable cloud storage
-- 🛡️ **Privacy First** - Your data is encrypted & private
-- ⚙️ **Full Control** - Complete account & data management
-- 🌐 **GDPR Compliant** - Transparent data handling
+### 🔐 Privacy & Security
+- **Google OAuth** authentication
+- **Firebase Security Rules**
+- **Server-side API Keys**
+- **GDPR Compliant**
 
 </td>
 </tr>
 </table>
 
+### 🎨 Additional Features
+
+- **🌓 Dark/Light Mode** - Automatic theme switching
+- **📱 Fully Responsive** - Mobile-first design
+- **🌤️ Weather Widget** - Location-aware weather
+- **👤 Public Profiles** - Share your journey (optional)
+- **🔗 Embeddable Widgets** - Showcase your stats
+- **⚡ Offline Support** - Firebase persistence
+
 ---
 
-## 🚀 Technology Stack
+## 🛠 Tech Stack
 
-<div align="center">
-
-### Frontend Excellence
-![Next.js](https://img.shields.io/badge/Next.js-13.4.19-000000?style=flat-square&logo=next.js)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.1.6-3178C6?style=flat-square&logo=typescript)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.3.3-06B6D4?style=flat-square&logo=tailwind-css)
-![Framer Motion](https://img.shields.io/badge/Framer_Motion-12.23.16-FF0055?style=flat-square&logo=framer)
+### Frontend
+| Technology | Purpose |
+|------------|---------|
+| **Next.js 16** | React framework with App Router |
+| **TypeScript** | Type-safe development |
+| **Tailwind CSS** | Utility-first styling |
+| **Framer Motion** | Smooth animations |
+| **Lucide React** | Beautiful icons |
 
 ### Backend & Services
-![Firebase](https://img.shields.io/badge/Firebase-12.3.0-FFCA28?style=flat-square&logo=firebase)
-![Azure OpenAI](https://img.shields.io/badge/Azure_OpenAI-GPT--4-00A1F1?style=flat-square&logo=microsoft-azure)
-![OpenWeather](https://img.shields.io/badge/OpenWeather-API-FF8C00?style=flat-square&logo=weather-api)
-
-### Development Tools
-![ESLint](https://img.shields.io/badge/ESLint-8.45.0-4B32C3?style=flat-square&logo=eslint)
-![PostCSS](https://img.shields.io/badge/PostCSS-8.4.27-DD3A0A?style=flat-square&logo=postcss)
-
-</div>
+| Technology | Purpose |
+|------------|---------|
+| **Firebase Auth** | Google OAuth authentication |
+| **Cloud Firestore** | Real-time NoSQL database |
+| **Grok-3 (xAI)** | AI-powered journal analysis |
+| **OpenWeather API** | Weather data integration |
+| **Vercel** | Deployment & hosting |
 
 ---
 
-## 🎨 User Experience Highlights
+## 🏗 Architecture
 
-<div align="center">
-
-| 🌙 **Dark/Light Mode** | 📱 **Responsive Design** | ✨ **Glass Morphism UI** |
-|:---:|:---:|:---:|
-| Seamless theme switching | Perfect on all devices | Modern, beautiful interface |
-| **🎭 Smooth Animations** | **📱 PWA Ready** | **⚡ Lightning Fast** |
-| Framer Motion powered | Install like native app | Optimized performance |
-
-</div>
-
----
-
-## 📦 Installation
-
-### 🔧 Prerequisites
-```bash
-✅ Node.js 16.0+
-✅ npm or yarn
-✅ Firebase project (free tier)
-✅ Azure OpenAI account (optional)
-✅ OpenWeather API key (optional)
+```
+┌─────────────────────────────────────────────────────────────┐
+│                         CLIENT                               │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐         │
+│  │   Pages     │  │  Components │  │   Context   │         │
+│  │  /entries   │  │  JournalEditor│ │  AuthContext│         │
+│  │  /insights  │  │  InsightsPage │ │JournalContext│        │
+│  │  /settings  │  │  SettingsPage │ │ ThemeContext│         │
+│  └─────────────┘  └─────────────┘  └─────────────┘         │
+└────────────────────────────┬────────────────────────────────┘
+                             │
+                             ▼
+┌─────────────────────────────────────────────────────────────┐
+│                      API ROUTES (Server)                     │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐         │
+│  │ /api/analyze│  │ /api/weather│  │/api/profile │         │
+│  │  (AI + Keys)│  │  (Weather)  │  │  (Public)   │         │
+│  └─────────────┘  └─────────────┘  └─────────────┘         │
+└────────────────────────────┬────────────────────────────────┘
+                             │
+                             ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    EXTERNAL SERVICES                         │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐         │
+│  │  Firebase   │  │  GitHub     │  │ OpenWeather │         │
+│  │  Firestore  │  │  Models API │  │     API     │         │
+│  │    Auth     │  │  (Grok-3)   │  │             │         │
+│  └─────────────┘  └─────────────┘  └─────────────┘         │
+└─────────────────────────────────────────────────────────────┘
 ```
 
-### 🚀 Quick Start
+---
 
-1. **Clone & Setup**
+## 🚀 Getting Started
+
+### Prerequisites
+
+- **Node.js** 18.17 or later
+- **npm** or **yarn**
+- **Firebase Project** with Firestore enabled
+- **GitHub Token** with Models API access
+- **OpenWeather API Key** (optional)
+
+### Installation
+
 ```bash
-git clone https://github.com/CyberWo9f-xD/Journling.git
-cd Journling
+# Clone the repository
+git clone https://github.com/Cyb3rWo9f/Journaling.tech.git
+cd Journaling.tech
+
+# Install dependencies
 npm install
-```
 
-2. **Environment Configuration**
-```bash
-# Copy the example environment file
+# Set up environment variables
 cp .env.example .env.local
+# Edit .env.local with your keys
+
+# Run development server
+npm run dev
 ```
 
-3. **Configure Environment Variables**
+Open [http://localhost:3000](http://localhost:3000) to see your app.
+
+---
+
+## 🔐 Environment Variables
+
+Create a `.env.local` file in the root directory:
+
 ```env
-# 🔥 Firebase Configuration (Required)
+# ============================================
+# SERVER-SIDE ONLY (Secure - Never exposed)
+# ============================================
+
+# GitHub Models API (for Grok-3 AI)
+GITHUB_TOKEN=your_github_personal_access_token
+
+# Weather API
+OPENWEATHER_API_KEY=your_openweather_api_key
+
+# ============================================
+# CLIENT-SIDE (Safe to expose)
+# ============================================
+
+# Firebase Configuration
 NEXT_PUBLIC_FIREBASE_API_KEY=your_firebase_api_key
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your-project-id
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your-project.appspot.com
 NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
 NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
 
-# 🤖 Azure OpenAI Configuration (Optional - for AI insights)
-AZURE_OPENAI_API_KEY=your_azure_openai_api_key
-AZURE_OPENAI_ENDPOINT=https://your-resource.cognitiveservices.azure.com
-AZURE_OPENAI_DEPLOYMENT=gpt-4o
-AZURE_OPENAI_API_VERSION=2024-12-01-preview
-
-# 🌤️ Weather Integration (Optional)
-OPENWEATHER_API_KEY=your_openweather_api_key
-
-# ⚙️ App Configuration
-NEXT_PUBLIC_APP_NAME=AI Journaling
-NEXT_PUBLIC_APP_URL=http://localhost:3000
+# App Configuration
+NEXT_PUBLIC_APP_NAME=Journaling
+NEXT_PUBLIC_APP_URL=https://app.journaling.tech
+NEXT_PUBLIC_LANDING_URL=https://journaling.tech
 ```
 
-4. **Launch Development Server**
-```bash
-npm run dev
-# Visit: http://localhost:3000
-```
-
----
-
-
-
-## 🌐 Deploy to Vercel - Free Hosting
-
-<div align="center">
-
-### 🚀 **One-Click Deployment**
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/CyberWo9f-xD/Journling&project-name=journling-app&repository-name=journling-app)
-
-**Click the button above for instant deployment!**
-
-</div>
-
-### 📋 Manual Deployment Steps
-
-1. **Push your changes to GitHub** (if you made any modifications)
-```bash
-git add .
-git commit -m "Update configuration for deployment"
-git push origin main
-```
-
-2. **Visit [Vercel.com](https://vercel.com)** and sign in with GitHub
-
-3. **Import your repository:**
-   - Click "New Project"
-   - Import `CyberWo9f-xD/Journling`
-   - Select the root directory
-
-4. **Configure Environment Variables:**
-   - Add all your environment variables from `.env.local`
-   - Make sure to set the correct Firebase configuration
-
-5. **Deploy!** 
-   - Click "Deploy"
-   - Your app will be live at `https://your-app-name.vercel.app`
-
----
-
-## 🔑 Environment Variables for Vercel
+### Variable Reference
 
 | Variable | Required | Description |
-|----------|:--------:|-------------|
-| `NEXT_PUBLIC_FIREBASE_API_KEY` | 🔴 **Required** | Firebase API key |
-| `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN` | 🔴 **Required** | Firebase auth domain |
-| `NEXT_PUBLIC_FIREBASE_PROJECT_ID` | 🔴 **Required** | Firebase project ID |
-| `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET` | 🔴 **Required** | Firebase storage bucket |
-| `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID` | 🔴 **Required** | Firebase sender ID |
-| `NEXT_PUBLIC_FIREBASE_APP_ID` | 🔴 **Required** | Firebase app ID |
-| `AZURE_OPENAI_API_KEY` | 🟡 **Optional** | For AI insights |
-| `AZURE_OPENAI_ENDPOINT` | 🟡 **Optional** | Azure OpenAI endpoint |
-| `OPENWEATHER_API_KEY` | 🟡 **Optional** | For weather widget |
+|----------|----------|-------------|
+| `GITHUB_TOKEN` | ✅ Yes | GitHub PAT with Models API access |
+| `OPENWEATHER_API_KEY` | ❌ Optional | For weather widget |
+| `NEXT_PUBLIC_FIREBASE_*` | ✅ Yes | Firebase project config |
+| `NEXT_PUBLIC_APP_URL` | ❌ Optional | Production app URL |
 
 ---
 
-## 🏗️ Project Architecture
-
-<details>
-<summary><strong>📁 Click to expand project structure</strong></summary>
+## 📁 Project Structure
 
 ```
 src/
-├── 🔐 components/          # React components
-│   ├── auth/              # 🔑 Authentication components
-│   ├── journal/           # ✍️ Journal editor and related
-│   ├── insights/          # 🧠 AI insights and analytics
-│   ├── layout/            # 🏗️ Layout and navigation
-│   ├── settings/          # ⚙️ User settings and profile
-│   ├── ui/                # 🎨 Reusable UI components
-│   └── widgets/           # 🌤️ Weather and other widgets
-├── 🔄 context/            # React context providers
-│   ├── AuthContext.tsx    # 🔑 Authentication state
-│   ├── JournalContext.tsx # 📖 Journal data management
-│   └── ThemeContext.tsx   # 🌗 Theme management
-├── 🪝 hooks/              # Custom React hooks
-├── 📚 lib/                # Library configurations
-├── 📄 pages/              # Next.js pages
-├── 🔧 services/           # External service integrations
-├── 🎨 styles/             # Global styles
-├── 📝 types/              # TypeScript type definitions
-└── 🛠️ utils/              # Utility functions
+├── components/
+│   ├── auth/           # Login, UserProfile
+│   ├── insights/       # InsightsPage, AI summaries
+│   ├── journal/        # JournalEditor, EntriesPage
+│   ├── landing/        # Landing page components
+│   ├── layout/         # Layout wrapper
+│   ├── settings/       # Settings, Profile cards
+│   ├── ui/             # Reusable UI components
+│   └── widgets/        # Weather widgets
+├── context/
+│   ├── AuthContext.tsx     # Authentication state
+│   ├── JournalContext.tsx  # Journal entries state
+│   └── ThemeContext.tsx    # Dark/light mode
+├── hooks/
+│   └── useAutoSave.ts      # Auto-save hook
+├── lib/
+│   └── firebase.ts         # Firebase initialization
+├── pages/
+│   ├── api/
+│   │   ├── analyze.ts      # AI analysis (protected prompts)
+│   │   ├── weather.ts      # Weather API proxy
+│   │   └── profile/        # Public profile API
+│   ├── embed/              # Embeddable widgets
+│   ├── u/                  # Public profile pages
+│   ├── entries.tsx         # Entries page
+│   ├── insights.tsx        # Insights page
+│   ├── settings.tsx        # Settings page
+│   ├── landing.tsx         # Landing page
+│   └── index.tsx           # Main app page
+├── services/
+│   ├── ai.ts               # AI service client
+│   ├── firebase.ts         # Firestore operations
+│   ├── freeWeatherService.ts
+│   └── storage.ts          # LocalStorage helpers
+├── styles/
+│   └── globals.css         # Global styles + CSS variables
+├── types/
+│   └── index.ts            # TypeScript interfaces
+├── utils/
+│   ├── index.ts            # Utility functions
+│   └── logger.ts           # Production-safe logger
+└── middleware.ts           # Domain routing
 ```
 
-</details>
+---
+
+## 🔒 Security
+
+Your privacy and data security are our top priorities:
+
+- **🔐 Secure Authentication** - Google OAuth 2.0 with Firebase
+- **🛡️ Data Encryption** - All data encrypted in transit and at rest
+- **👤 User Isolation** - Your journal entries are only accessible by you
+- **🚫 No Data Selling** - We never sell or share your personal data
+- **📋 GDPR Compliant** - Full data export and deletion support
 
 ---
 
-## 🎮 Feature Walkthrough
+## 🌐 Deployment
 
-<table>
-<tr>
-<td width="20%" align="center"><strong>🚪 Step 1</strong><br/>Getting Started</td>
-<td width="20%" align="center"><strong>✍️ Step 2</strong><br/>Writing Experience</td>
-<td width="20%" align="center"><strong>🧠 Step 3</strong><br/>AI Insights</td>
-<td width="20%" align="center"><strong>📊 Step 4</strong><br/>Analytics</td>
-<td width="20%" align="center"><strong>⚙️ Step 5</strong><br/>Customization</td>
-</tr>
-<tr>
-<td>• Sign in with Google<br/>• Start first entry<br/>• Add mood & tags</td>
-<td>• Rich text editor<br/>• Auto-save magic<br/>• Weather capture</td>
-<td>• Entry analysis<br/>• Weekly summaries<br/>• Growth insights</td>
-<td>• Streak tracking<br/>• Mood trends<br/>• Tag visualization</td>
-<td>• Profile setup<br/>• Achievement badges<br/>• Theme preferences</td>
-</tr>
-</table>
+The application is deployed on **Vercel** with automatic CI/CD from the main branch.
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Cyb3rWo9f/Journaling.tech&env=GITHUB_TOKEN,OPENWEATHER_API_KEY,NEXT_PUBLIC_FIREBASE_API_KEY,NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,NEXT_PUBLIC_FIREBASE_PROJECT_ID,NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,NEXT_PUBLIC_FIREBASE_APP_ID&project-name=journaling&repository-name=journaling)
+
+- **Production**: [journaling.tech](https://journaling.tech)
+- **App**: [app.journaling.tech](https://app.journaling.tech)
 
 ---
 
-## 🗺️ Roadmap & Future Features
+## 🤝 Contributing
 
-<div align="center">
+Contributions are welcome! Please follow these steps:
 
-### 🎯 **Coming Soon**
+1. **Fork** the repository
+2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
+3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
+4. **Push** to the branch (`git push origin feature/amazing-feature`)
+5. **Open** a Pull Request
 
-</div>
+### Development Guidelines
 
-| 🚀 **Q1 2025** | 🔮 **Q2 2025** | 🌟 **Future** |
-|:---:|:---:|:---:|
-| 📄 PDF Export | 🎤 Voice-to-text | 👥 Collaborative journaling |
-| 📱 Mobile App | 💪 Fitness integration | 🧘 Meditation features |
-| 🔍 Advanced search | 📊 Enhanced analytics | 🤖 AI coaching |
-
----
-
-## 🤝 Contributing & Community
-
-<div align="center">
-
-[![Contributors](https://img.shields.io/github/contributors/CyberWo9f-xD/Journling?style=for-the-badge)](https://github.com/CyberWo9f-xD/Journling/graphs/contributors)
-[![Issues](https://img.shields.io/github/issues/CyberWo9f-xD/Journling?style=for-the-badge)](https://github.com/CyberWo9f-xD/Journling/issues)
-[![Stars](https://img.shields.io/github/stars/CyberWo9f-xD/Journling?style=for-the-badge)](https://github.com/CyberWo9f-xD/Journling/stargazers)
-
-**We welcome contributions! 🎉**
-
-</div>
-
-1. 🍴 **Fork the repository**
-2. 🌿 **Create a feature branch**
-3. 💻 **Make your changes**
-4. ✅ **Add tests if applicable**
-5. 🚀 **Submit a pull request**
+- Follow TypeScript best practices
+- Use Tailwind CSS for styling
+- Write meaningful commit messages
+- Test on both light and dark modes
+- Ensure mobile responsiveness
 
 ---
 
-## 🆘 Support & Resources
+## 📄 License
 
-<div align="center">
-
-| 📚 **Documentation** | 🐛 **Issues** | 💬 **Discussions** | 📧 **Contact** |
-|:---:|:---:|:---:|:---:|
-| [Read the Docs](#) | [Report Bugs](../../issues) | [Join Community](#) | [Email Support](#) |
-
-</div>
-
----
-
-## 📄 License & Credits
-
-<div align="center">
-
-**[MIT License](./LICENSE)** - Feel free to use this project for personal or commercial purposes
-
-### 🙏 **Acknowledgments**
-
-[![OpenAI](https://img.shields.io/badge/Powered_by-OpenAI-00A67E?style=flat-square&logo=openai)](https://openai.com)
-[![Firebase](https://img.shields.io/badge/Backend-Firebase-FFCA28?style=flat-square&logo=firebase)](https://firebase.google.com)
-[![Vercel](https://img.shields.io/badge/Hosted_on-Vercel-000000?style=flat-square&logo=vercel)](https://vercel.com)
-
-*Special thanks to the open-source community for making this project possible*
-
-</div>
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 
 ---
 
 <div align="center">
 
-## 💝 **Made with ❤️ for better mental health and personal growth**
+**Built with ❤️ by Cyb3rWo9f**
 
-### ⭐ **If this project helped you, consider giving it a star!**
-
-[![GitHub Stars](https://img.shields.io/github/stars/CyberWo9f-xD/Journling?style=social)](https://github.com/CyberWo9f-xD/Journling/stargazers)
-
----
-
-*"The life of every man is a diary in which he means to write one story, and writes another."* - **J.M. Barrie**
+[🌐 Website](https://journaling.tech) · [🐛 Report Bug](https://github.com/Cyb3rWo9f/Journaling.tech/issues) · [✨ Request Feature](https://github.com/Cyb3rWo9f/Journaling.tech/issues)
 
 </div>

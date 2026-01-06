@@ -1,19 +1,20 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { AlertTriangle, X } from 'lucide-react'
+import { AlertTriangle, X, Loader2 } from 'lucide-react'
 import { Button } from './Button'
 
 interface ConfirmationModalProps {
   isOpen: boolean
   onClose: () => void
-  onConfirm: () => void
+  onConfirm: () => void | Promise<void>
   title: string
   message: string
   confirmText?: string
   cancelText?: string
   type?: 'danger' | 'warning' | 'info'
+  isLoading?: boolean
 }
 
 export function ConfirmationModal({
@@ -24,30 +25,42 @@ export function ConfirmationModal({
   message,
   confirmText = 'Confirm',
   cancelText = 'Cancel',
-  type = 'danger'
+  type = 'danger',
+  isLoading: externalLoading = false
 }: ConfirmationModalProps) {
+  const [internalLoading, setInternalLoading] = useState(false)
+  const isLoading = externalLoading || internalLoading
+
   if (!isOpen) return null
 
-  const handleConfirm = () => {
-    onConfirm()
-    onClose()
+  const handleConfirm = async () => {
+    try {
+      setInternalLoading(true)
+      await onConfirm()
+      onClose()
+    } catch (error) {
+      console.error('Confirmation action failed:', error)
+      // Don't close on error - let user see/retry
+    } finally {
+      setInternalLoading(false)
+    }
   }
 
   const typeStyles = {
     danger: {
       icon: AlertTriangle,
       iconColor: 'text-red-500',
-      confirmStyle: 'bg-red-500 hover:bg-red-600 text-white'
+      confirmStyle: 'bg-red-500 hover:bg-red-600 text-white disabled:bg-red-400'
     },
     warning: {
       icon: AlertTriangle,
       iconColor: 'text-yellow-500',
-      confirmStyle: 'bg-yellow-500 hover:bg-yellow-600 text-white'
+      confirmStyle: 'bg-yellow-500 hover:bg-yellow-600 text-white disabled:bg-yellow-400'
     },
     info: {
       icon: AlertTriangle,
       iconColor: 'text-blue-500',
-      confirmStyle: 'bg-blue-500 hover:bg-blue-600 text-white'
+      confirmStyle: 'bg-blue-500 hover:bg-blue-600 text-white disabled:bg-blue-400'
     }
   }
 
@@ -106,14 +119,17 @@ export function ConfirmationModal({
                   size="sm"
                   onClick={onClose}
                   className="px-4"
+                  disabled={isLoading}
                 >
                   {cancelText}
                 </Button>
                 <button
                   onClick={handleConfirm}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${currentStyle.confirmStyle}`}
+                  disabled={isLoading}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 ${currentStyle.confirmStyle}`}
                 >
-                  {confirmText}
+                  {isLoading && <Loader2 size={14} className="animate-spin" />}
+                  {isLoading ? 'Deleting...' : confirmText}
                 </button>
               </div>
             </div>

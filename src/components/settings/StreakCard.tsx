@@ -11,6 +11,7 @@ interface StreakCardProps {
 }
 
 export function StreakCard({ streakData, className }: StreakCardProps) {
+  
   const formatDate = (dateString?: string) => {
     if (!dateString) return 'Never'
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -55,48 +56,51 @@ export function StreakCard({ streakData, className }: StreakCardProps) {
   }
 
   return (
-    <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 ${className}`}>
+    <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 ${className}`}>
       {/* Current Streak Card */}
-      <Card className="relative overflow-hidden bg-gradient-to-br from-orange-50 via-red-50/50 to-pink-50/50 dark:from-orange-900/20 dark:via-red-900/10 dark:to-pink-900/10 border-0 shadow-lg dark:shadow-gray-900/50">
-        <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 via-red-500/5 to-pink-500/5 dark:from-orange-400/10 dark:via-red-400/10 dark:to-pink-400/10" />
-        <CardHeader className="pb-2 sm:pb-3 relative z-10">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:justify-between">
-            <h3 className="font-semibold flex items-center gap-2 text-gray-900 dark:text-white">
-              <div className="p-1.5 sm:p-2 rounded-full bg-gradient-to-r from-orange-500 to-red-500 shadow-md sm:shadow-lg">
-                <Flame className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+      <Card>
+        <CardHeader className="pb-3">
+          <div className="flex items-center justify-between">
+            <h3 className="font-semibold flex items-center gap-2 text-[var(--text-primary)]">
+              <div className="p-2 rounded-lg bg-orange-500/10">
+                <Flame className="h-5 w-5 text-orange-500" />
               </div>
-              <span className="text-sm sm:text-base">Current Streak</span>
+              <span>Current Streak</span>
             </h3>
-            <div className={`text-xs sm:text-sm font-medium px-2 sm:px-3 py-1 rounded-full backdrop-blur-sm ${getStreakColor() === 'text-green-600' ? 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300' : 
-              getStreakColor() === 'text-yellow-600' ? 'bg-yellow-100 dark:bg-yellow-900/50 text-yellow-700 dark:text-yellow-300' : 
-              'bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-300'}`}>
+            <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${
+              getStreakColor() === 'text-green-600' 
+                ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' 
+                : getStreakColor() === 'text-yellow-600' 
+                  ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400' 
+                  : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
+            }`}>
               {getStreakStatus()}
-            </div>
+            </span>
           </div>
         </CardHeader>
-  <CardContent className="relative z-10 bg-white/40 dark:bg-[#0b0f13]/40 backdrop-blur-sm py-2 sm:py-4">
-          <div className="space-y-3 sm:space-y-4">
+        <CardContent className="pt-2">
+          <div className="space-y-4">
             <div className="text-center">
-              <div className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent mb-1 sm:mb-2">
+              <div className="text-5xl font-bold text-orange-500 mb-1 font-en">
                 {streakData.currentStreak}
               </div>
-              <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 font-medium">
+              <div className="text-sm text-[var(--text-secondary)]">
                 {streakData.currentStreak === 1 ? 'day' : 'days'}
               </div>
             </div>
             
             {streakData.streakStartDate && (
-              <div className="text-center p-2 sm:p-3 rounded-lg bg-white/60 dark:bg-[#0b0f13]/60 backdrop-blur-sm">
-                <div className="text-xs text-gray-500 dark:text-gray-400 font-medium">Started</div>
-                <div className="text-xs sm:text-sm font-semibold text-gray-900 dark:text-white">
+              <div className="text-center p-3 rounded-xl bg-[var(--background)] dark:bg-white/5 border border-[var(--border)] dark:border-transparent">
+                <div className="text-xs text-[var(--text-secondary)]">Started</div>
+                <div className="text-sm font-medium text-[var(--text-primary)]">
                   {formatDate(streakData.streakStartDate)}
                 </div>
               </div>
             )}
             
-            <div className="text-center p-2 sm:p-3 rounded-lg bg-white/60 dark:bg-[#0b0f13]/60 backdrop-blur-sm">
-              <div className="text-xs text-gray-500 dark:text-gray-400 font-medium">Last Entry</div>
-              <div className="text-xs sm:text-sm font-semibold text-gray-900 dark:text-white">
+            <div className="text-center p-3 rounded-xl bg-[var(--background)] dark:bg-white/5 border border-[var(--border)] dark:border-transparent">
+              <div className="text-xs text-[var(--text-secondary)]">Last Entry</div>
+              <div className="text-sm font-medium text-[var(--text-primary)]">
                 {formatDate(streakData.lastEntryDate)}
               </div>
             </div>
@@ -105,50 +109,49 @@ export function StreakCard({ streakData, className }: StreakCardProps) {
       </Card>
 
       {/* Longest Streak Card */}
-      <Card className="relative overflow-hidden bg-gradient-to-br from-yellow-50 via-amber-50/50 to-orange-50/50 dark:from-yellow-900/20 dark:via-amber-900/10 dark:to-orange-900/10 border-0 shadow-lg dark:shadow-gray-900/50">
-        <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 via-amber-500/5 to-orange-500/5 dark:from-yellow-400/10 dark:via-amber-400/10 dark:to-orange-400/10" />
-        <CardHeader className="pb-2 sm:pb-3 relative z-10">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:justify-between">
-            <h3 className="font-semibold flex items-center gap-2 text-gray-900 dark:text-white">
-              <div className="p-1.5 sm:p-2 rounded-full bg-gradient-to-r from-yellow-500 to-amber-500 shadow-md sm:shadow-lg">
-                <Trophy className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+      <Card>
+        <CardHeader className="pb-3">
+          <div className="flex items-center justify-between">
+            <h3 className="font-semibold flex items-center gap-2 text-[var(--text-primary)]">
+              <div className="p-2 rounded-lg bg-yellow-500/10">
+                <Trophy className="h-5 w-5 text-yellow-500" />
               </div>
-              <span className="text-sm sm:text-base">Personal Best</span>
+              <span>Longest Streak</span>
             </h3>
             {streakData.currentStreak === streakData.longestStreak && streakData.longestStreak > 0 && (
-              <div className="text-xs bg-gradient-to-r from-yellow-400 to-amber-400 text-yellow-900 px-2 sm:px-3 py-1 rounded-full font-semibold shadow-md sm:shadow-lg animate-pulse">
-                New Record! 🎉
-              </div>
+              <span className="text-xs bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 px-2.5 py-1 rounded-full font-medium">
+                Record! 🎉
+              </span>
             )}
           </div>
         </CardHeader>
-  <CardContent className="relative z-10 bg-white/40 dark:bg-[#0b0f13]/40 backdrop-blur-sm py-2 sm:py-4">
-          <div className="space-y-3 sm:space-y-4">
+        <CardContent className="pt-2">
+          <div className="space-y-4">
             <div className="text-center">
-              <div className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-yellow-500 to-amber-500 bg-clip-text text-transparent mb-1 sm:mb-2">
+              <div className="text-5xl font-bold text-yellow-500 mb-1 font-en">
                 {streakData.longestStreak}
               </div>
-              <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 font-medium">
+              <div className="text-sm text-[var(--text-secondary)]">
                 {streakData.longestStreak === 1 ? 'day' : 'days'}
               </div>
             </div>
             
             {/* Progress towards personal best */}
-            <div className="space-y-2 sm:space-y-3 p-2 sm:p-3 rounded-lg bg-white/60 dark:bg-[#0b0f13]/60 backdrop-blur-sm">
-              <div className="flex justify-between text-xs text-gray-600 dark:text-gray-400 font-medium">
-                <span>Progress to personal best</span>
-                <span>{Math.round(calculateStreakProgress())}%</span>
+            <div className="space-y-2 p-3 rounded-xl bg-[var(--background)] dark:bg-white/5 border border-[var(--border)] dark:border-transparent">
+              <div className="flex justify-between text-xs text-[var(--text-secondary)]">
+                <span>Progress</span>
+                <span className="font-en">{Math.round(calculateStreakProgress())}%</span>
               </div>
-              <div className="w-full bg-gray-200 dark:bg-[#1a1d20] rounded-full h-2 sm:h-3 shadow-inner">
+              <div className="w-full bg-[var(--border)] dark:bg-white/10 rounded-full h-2 overflow-hidden">
                 <div 
-                  className="bg-gradient-to-r from-yellow-400 via-yellow-500 to-amber-500 h-2 sm:h-3 rounded-full transition-all duration-700 shadow-sm"
+                  className="bg-yellow-500 h-2 rounded-full transition-all duration-500"
                   style={{ width: `${calculateStreakProgress()}%` }}
                 />
               </div>
             </div>
             
-            <div className="text-center p-2 sm:p-3 rounded-lg bg-white/60 dark:bg-[#0b0f13]/60 backdrop-blur-sm">
-              <div className="text-xs text-gray-600 dark:text-gray-400 font-medium">
+            <div className="text-center p-3 rounded-xl bg-[var(--background)] dark:bg-white/5 border border-[var(--border)] dark:border-transparent">
+              <div className="text-xs text-[var(--text-secondary)]">
                 {streakData.currentStreak < streakData.longestStreak 
                   ? `${streakData.longestStreak - streakData.currentStreak} days to beat record`
                   : streakData.currentStreak === streakData.longestStreak && streakData.longestStreak > 0

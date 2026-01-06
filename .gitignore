@@ -30,6 +30,12 @@ yarn-error.log*
 .env.vercel.filled
 vercel-env.filled.json
 
+# firebase
+firestore.rules
+firestore.indexes.json
+firebase.json
+.firebaserc
+
 # vercel
 .vercel
 

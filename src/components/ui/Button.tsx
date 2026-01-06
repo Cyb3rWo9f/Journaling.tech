@@ -3,10 +3,11 @@
 import React from 'react'
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'ghost' | 'outline' | 'save'
-  size?: 'sm' | 'md' | 'lg'
+  variant?: 'primary' | 'secondary' | 'ghost' | 'outline' | 'save' | 'danger'
+  size?: 'xs' | 'sm' | 'md' | 'lg'
   children: React.ReactNode
   isLoading?: boolean
+  fullWidth?: boolean
 }
 
 export function Button({ 
@@ -14,47 +15,58 @@ export function Button({
   size = 'md', 
   children, 
   isLoading = false,
+  fullWidth = false,
   className,
   disabled,
   ...props 
 }: ButtonProps) {
-  // Subtle base: prefer gentle shadow/brightness change over scaling to avoid a "pop" feeling
-  const baseClasses = 'relative inline-flex items-center justify-center font-medium transition-shadow duration-200 ease-out focus:outline-none focus:ring-2 focus:ring-offset-2'
+  const baseClasses = 'relative inline-flex items-center justify-center font-medium transition-all duration-200 ease-out focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--primary)] disabled:opacity-50 disabled:cursor-not-allowed'
   
   const variants = {
-  primary: 'bg-gradient-to-r from-[var(--primary)] to-[var(--primary-dark)] text-white shadow-md hover:shadow-lg focus:ring-[var(--primary)] hover:brightness-105',
-  // Save variant: refined design with contained shadows and appealing effects
-  save: `relative overflow-hidden bg-gradient-to-br from-[#ff6b6b] via-[#ff7a7a] to-[#ff8e8e] text-white font-semibold
-         border border-white/30 rounded-lg
-         shadow-[0_4px_16px_rgba(255,107,107,0.2),inset_0_1px_0_rgba(255,255,255,0.3),inset_0_-1px_0_rgba(0,0,0,0.1)]
-         hover:shadow-[0_6px_20px_rgba(255,107,107,0.3),inset_0_1px_0_rgba(255,255,255,0.4),inset_0_-1px_0_rgba(0,0,0,0.15)]
-         hover:-translate-y-0.5 hover:scale-[1.01]
-         active:scale-[0.99] active:translate-y-0
-         transition-all duration-200 ease-out
-         before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/15 before:to-transparent before:translate-x-[-100%] before:transition-transform before:duration-500 hover:before:translate-x-[100%]
-         focus:ring-2 focus:ring-[#ff6b6b]/40 focus:outline-none`,
-    secondary: 'bg-[var(--surface)] text-[var(--text-primary)] border-2 border-[var(--border)] hover:bg-[var(--border)] hover:border-[var(--primary)] focus:ring-[var(--primary)]',
-    ghost: 'text-[var(--text-primary)] hover:bg-[var(--surface)] focus:ring-[var(--primary)]',
-    outline: 'bg-transparent text-[var(--primary)] border-2 border-[var(--primary)] hover:bg-[var(--primary)] hover:text-white focus:ring-[var(--primary)]'
+    primary: `bg-gradient-to-r from-[var(--primary)] to-[var(--primary-dark)] text-white shadow-md 
+              hover:shadow-lg hover:brightness-105 active:scale-[0.98]`,
+    
+    secondary: `bg-[var(--surface)] text-[var(--text-primary)] border border-[var(--border)] 
+                hover:bg-[var(--border-light)] hover:border-[var(--primary)] active:scale-[0.98]`,
+    
+    ghost: `text-[var(--text-primary)] hover:bg-[var(--border-light)] active:scale-[0.98]`,
+    
+    outline: `bg-transparent text-[var(--primary)] border border-[var(--primary)] 
+              hover:bg-[var(--primary)] hover:text-white active:scale-[0.98]`,
+    
+    save: `bg-gradient-to-br from-[var(--primary)] via-[var(--primary)] to-[var(--primary-dark)] text-white font-semibold
+           border border-white/20 shadow-lg shadow-[var(--primary)]/20
+           hover:shadow-xl hover:shadow-[var(--primary)]/25 hover:-translate-y-0.5
+           active:scale-[0.98] active:translate-y-0`,
+    
+    danger: `bg-gradient-to-r from-red-500 to-red-600 text-white shadow-md 
+             hover:shadow-lg hover:brightness-105 active:scale-[0.98]`
   }
   
   const sizes = {
-    sm: 'px-3 py-1.5 text-sm rounded-lg',
-    md: 'px-6 py-3 text-base rounded-xl',
-    lg: 'px-8 py-4 text-lg rounded-2xl'
+    xs: 'px-2.5 py-1.5 text-xs rounded-md gap-1.5',
+    sm: 'px-3 py-2 text-sm rounded-lg gap-2',
+    md: 'px-5 py-2.5 text-sm rounded-xl gap-2',
+    lg: 'px-6 py-3 text-base rounded-xl gap-2.5'
   }
 
   const isDisabled = disabled || isLoading
 
   return (
     <button
-      className={`${baseClasses} ${variants[variant]} ${sizes[size]} ${isDisabled ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'} ${className || ''}`}
+      className={`
+        ${baseClasses} 
+        ${variants[variant]} 
+        ${sizes[size]} 
+        ${fullWidth ? 'w-full' : ''} 
+        ${className || ''}
+      `}
       disabled={isDisabled}
       {...props}
     >
       {isLoading && (
         <svg
-          className="animate-spin -ml-1 mr-3 h-5 w-5"
+          className="animate-spin h-4 w-4"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"

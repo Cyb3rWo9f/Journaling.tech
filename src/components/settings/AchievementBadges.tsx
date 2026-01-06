@@ -169,6 +169,7 @@ const getRarityBadgeColor = (rarity: Achievement['rarity']) => {
 }
 
 export function AchievementBadges({ profile, className }: AchievementBadgesProps) {
+  
   const { unlockedAchievements, lockedAchievements } = useMemo(() => {
     const unlocked: Achievement[] = []
     const locked: Achievement[] = []
@@ -230,7 +231,7 @@ export function AchievementBadges({ profile, className }: AchievementBadgesProps
 
   return (
     <div className={`space-y-6 ${className}`}>
-      <Card className="relative overflow-hidden bg-gradient-to-br from-purple-50 via-indigo-50/50 to-blue-50/50 dark:from-purple-900/20 dark:via-indigo-900/10 dark:to-blue-900/10 border-0 shadow-lg dark:shadow-gray-900/50">
+      <Card className="relative overflow-hidden bg-gradient-to-br from-purple-50 via-indigo-50/50 to-blue-50/50 dark:from-purple-900/30 dark:via-slate-900/60 dark:to-indigo-900/20 border-0 shadow-lg dark:shadow-purple-900/20">
         <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-indigo-500/5 to-blue-500/5 dark:from-purple-400/10 dark:via-indigo-400/10 dark:to-blue-400/10" />
         
         <CardHeader className="relative z-10">
@@ -240,7 +241,7 @@ export function AchievementBadges({ profile, className }: AchievementBadgesProps
                 <Trophy className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
               </div>
               <h3 className="text-base sm:text-xl font-bold text-gray-900 dark:text-white">
-                Achievement Badges
+                Achievements
               </h3>
             </div>
             <div className="text-xs sm:text-sm font-semibold px-2 sm:px-3 py-1 rounded-full bg-gradient-to-r from-purple-100 to-indigo-100 dark:from-purple-900/50 dark:to-indigo-900/50 text-purple-700 dark:text-purple-300 backdrop-blur-sm w-fit">
@@ -249,14 +250,14 @@ export function AchievementBadges({ profile, className }: AchievementBadgesProps
           </div>
         </CardHeader>
         
-  <CardContent className="relative z-10 bg-white/40 dark:bg-[#0b0f13]/40 backdrop-blur-sm">
+  <CardContent className="relative z-10 bg-[var(--background)]/40 backdrop-blur-sm">
           {/* Progress Overview */}
-          <div className="mb-6 p-4 rounded-lg bg-white/60 dark:bg-[#0b0f13]/60 backdrop-blur-sm">
-            <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400 font-medium mb-2">
+          <div className="mb-6 p-4 rounded-lg bg-[var(--background)]/60 dark:bg-white/5 backdrop-blur-sm">
+            <div className="flex justify-between text-sm text-[var(--text-secondary)] font-medium mb-2">
               <span>Overall Progress</span>
               <span>{Math.round((unlockedAchievements.length / ACHIEVEMENTS.length) * 100)}%</span>
             </div>
-            <div className="w-full bg-gray-200 dark:bg-[#1a1d20] rounded-full h-3 shadow-inner">
+            <div className="w-full bg-[var(--surface-elevated)] dark:bg-white/10 rounded-full h-3 shadow-inner">
               <div 
                 className="bg-gradient-to-r from-purple-400 via-indigo-500 to-blue-500 h-3 rounded-full transition-all duration-700 shadow-sm"
                 style={{ width: `${(unlockedAchievements.length / ACHIEVEMENTS.length) * 100}%` }}
@@ -279,7 +280,7 @@ export function AchievementBadges({ profile, className }: AchievementBadgesProps
                   return (
                     <div 
                       key={achievement.id}
-                      className="p-3 sm:p-4 rounded-xl border backdrop-blur-sm hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl bg-gradient-to-br from-white/80 to-gray-50/80 dark:from-[#0b0f13]/80 dark:to-[#0b0f13]/80 border-gray-200/50 dark:border-gray-700/50"
+                      className="p-3 sm:p-4 rounded-xl border backdrop-blur-sm hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl bg-gradient-to-br from-white/80 to-gray-50/80 dark:from-slate-800/60 dark:to-purple-900/20 border-gray-200/50 dark:border-purple-500/10"
                     >
                       <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
                         <div className={`p-2 sm:p-2.5 rounded-lg ${getRarityIconBg(achievement.rarity)} shadow-md`}>
@@ -318,28 +319,28 @@ export function AchievementBadges({ profile, className }: AchievementBadgesProps
                   return (
                     <div 
                       key={achievement.id}
-                      className="p-4 rounded-xl border backdrop-blur-sm hover:scale-105 transition-all duration-300 shadow-md hover:shadow-lg bg-gradient-to-br from-gray-100/80 to-gray-200/60 dark:from-[#0b0f13]/60 dark:to-[#0b0f13]/80 border-gray-300/50 dark:border-gray-700/50 opacity-75 hover:opacity-90"
+                      className="p-4 rounded-xl border backdrop-blur-sm hover:scale-105 transition-all duration-300 shadow-md hover:shadow-lg bg-gray-100/80 dark:bg-slate-800/40 border-gray-200 dark:border-white/5 opacity-80 hover:opacity-100"
                     >
                       <div className="flex items-center gap-3 mb-3">
-                        <div className="p-2.5 rounded-lg bg-gray-400 dark:bg-[#1a1d20] shadow-md">
-                          <IconComponent className="h-5 w-5 text-white" />
+                        <div className="p-2.5 rounded-lg bg-gray-400 dark:bg-gray-700 shadow-md">
+                          <IconComponent className="h-5 w-5 text-white dark:text-gray-300" />
                         </div>
-                        <div className="px-3 py-1.5 rounded-full text-xs font-bold bg-gray-500 dark:bg-[#1a1d20] text-white shadow-sm">
+                        <div className="px-3 py-1.5 rounded-full text-xs font-bold bg-gray-400 dark:bg-gray-700 text-white dark:text-gray-300 shadow-sm capitalize">
                           {achievement.rarity}
                         </div>
                       </div>
-                      <h4 className="font-bold text-sm mb-2 text-gray-700 dark:text-gray-300">{achievement.title}</h4>
-                      <p className="text-xs text-gray-600 dark:text-gray-400 mb-3 leading-relaxed">{achievement.description}</p>
+                      <h4 className="font-bold text-sm mb-2 text-gray-700 dark:text-gray-200">{achievement.title}</h4>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mb-3 leading-relaxed">{achievement.description}</p>
                       
                       {/* Progress bar */}
-                      <div className="space-y-2 p-3 rounded-lg bg-white/60 dark:bg-[#0b0f13]/60 backdrop-blur-sm">
+                      <div className="space-y-2 p-3 rounded-lg bg-white/60 dark:bg-gray-900/60 backdrop-blur-sm">
                         <div className="flex justify-between text-xs text-gray-600 dark:text-gray-400 font-medium">
                           <span>Progress</span>
                           <span>{Math.round(progress)}%</span>
                         </div>
-                        <div className="w-full bg-gray-300 dark:bg-[#1a1d20] rounded-full h-2 shadow-inner">
+                        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 shadow-inner">
                           <div 
-                            className="bg-gradient-to-r from-gray-400 to-gray-500 dark:from-gray-500 dark:to-gray-400 h-2 rounded-full transition-all duration-500 shadow-sm"
+                            className="bg-gradient-to-r from-gray-400 to-gray-500 dark:from-gray-500 dark:to-gray-600 h-2 rounded-full transition-all duration-500 shadow-sm"
                             style={{ width: `${progress}%` }}
                           />
                         </div>

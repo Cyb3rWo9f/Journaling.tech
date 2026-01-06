@@ -19,6 +19,7 @@ export function ProfileCard({ profile, onUpdateProfile, isLoading }: ProfileCard
     bio: profile.bio || '',
     location: profile.location || '',
   })
+
   const [isSaving, setIsSaving] = useState(false)
 
   const handleSave = async () => {
@@ -62,24 +63,22 @@ export function ProfileCard({ profile, onUpdateProfile, isLoading }: ProfileCard
   }
 
   return (
-    <Card className="w-full bg-gradient-to-br from-white via-blue-50/30 to-purple-50/30 dark:from-gray-900 dark:via-blue-900/20 dark:to-purple-900/20 border-0 shadow-lg dark:shadow-gray-900/50">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4 border-b border-gray-200/50 dark:border-gray-700/50">
+    <Card className="w-full">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4 border-b border-[var(--border)]">
         <div>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
-            Manage your personal information and preferences
+          <p className="text-sm text-[var(--text-secondary)]">
+            Manage your personal information
           </p>
         </div>
         {!isEditing ? (
-          <Button
-            variant="outline"
-            size="sm"
+          <button
             onClick={() => setIsEditing(true)}
             disabled={isLoading}
-            className="bg-white/80 dark:bg-[#0b0f13]/80 backdrop-blur-sm border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-[#0b0f13]/80 transition-all duration-200"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-[var(--primary)]/10 to-[var(--secondary)]/10 text-[var(--primary)] text-xs font-medium hover:from-[var(--primary)]/20 hover:to-[var(--secondary)]/20 active:scale-95 transition-all duration-200 shadow-sm"
           >
-            <Edit2 className="h-4 w-4 mr-2" />
-            Edit
-          </Button>
+            <Edit2 className="h-3.5 w-3.5" />
+            <span>Edit</span>
+          </button>
         ) : (
           <div className="flex gap-2">
             <Button
@@ -87,16 +86,17 @@ export function ProfileCard({ profile, onUpdateProfile, isLoading }: ProfileCard
               size="sm"
               onClick={handleCancel}
               disabled={isSaving}
-              className="bg-white/80 dark:bg-[#0b0f13]/80 backdrop-blur-sm border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-[#0b0f13]/80"
+              className="border-red-300 dark:border-red-500/30 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10"
             >
               <X className="h-4 w-4 mr-2" />
               Cancel
             </Button>
             <Button
+              variant="primary"
               size="sm"
               onClick={handleSave}
               disabled={isSaving}
-              className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-200"
+              className="bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white shadow-md hover:shadow-lg"
             >
               <Save className="h-4 w-4 mr-2" />
               {isSaving ? 'Saving...' : 'Save'}
@@ -104,7 +104,7 @@ export function ProfileCard({ profile, onUpdateProfile, isLoading }: ProfileCard
           </div>
         )}
       </CardHeader>
-  <CardContent className="space-y-6 bg-white/30 dark:bg-[#0b0f13]/30 backdrop-blur-sm">
+      <CardContent className="space-y-6">
         {/* Avatar and Basic Info */}
         <div className="flex flex-col sm:flex-row sm:items-start sm:space-x-4 space-y-4 sm:space-y-0">
           <div className="relative mx-auto sm:mx-0">
@@ -112,9 +112,8 @@ export function ProfileCard({ profile, onUpdateProfile, isLoading }: ProfileCard
               <img
                 src={profile.avatar}
                 alt={`${profile.displayName}'s avatar`}
-                className="h-20 w-20 rounded-full object-cover shadow-lg border-2 border-white dark:border-gray-700"
+                className="h-20 w-20 rounded-full object-cover shadow-md border-2 border-[var(--border)]"
                 onError={(e) => {
-                  // Fallback to initials if image fails to load
                   const target = e.target as HTMLImageElement;
                   target.style.display = 'none';
                   const fallback = target.nextElementSibling as HTMLElement;
@@ -123,7 +122,7 @@ export function ProfileCard({ profile, onUpdateProfile, isLoading }: ProfileCard
               />
             ) : null}
             <div 
-              className={`h-20 w-20 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-lg font-semibold text-white shadow-lg ${profile.avatar ? 'hidden' : 'flex'}`}
+              className={`h-20 w-20 rounded-full bg-[var(--primary)] flex items-center justify-center text-lg font-semibold text-white shadow-md ${profile.avatar ? 'hidden' : 'flex'}`}
             >
               {getInitials(profile.displayName)}
             </div>
@@ -132,29 +131,29 @@ export function ProfileCard({ profile, onUpdateProfile, isLoading }: ProfileCard
           <div className="flex-1 space-y-4">
             {!isEditing ? (
               <div className="space-y-2 text-center sm:text-left">
-                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">{profile.displayName}</h3>
+                <h3 className="text-xl font-semibold text-[var(--text-primary)]">{profile.displayName}</h3>
                 {profile.bio && (
-                  <p className="text-gray-600 dark:text-gray-300">{profile.bio}</p>
+                  <p className="text-[var(--text-secondary)]">{profile.bio}</p>
                 )}
-                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm text-gray-500 dark:text-gray-400">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm text-[var(--text-secondary)]">
                   {profile.location && (
                     <div className="flex items-center justify-center sm:justify-start gap-1">
-                      <MapPin className="h-3 w-3 sm:h-4 sm:w-4" />
+                      <MapPin className="h-4 w-4" />
                       {profile.location}
                     </div>
                   )}
                   <div className="flex items-center justify-center sm:justify-start gap-1">
-                    <Calendar className="h-3 w-3 sm:h-4 sm:w-4" />
+                    <Calendar className="h-4 w-4" />
                     Joined {formatJoinDate(profile.joinedDate)}
                   </div>
                 </div>
               </div>
             ) : (
-              <div className="space-y-4 w-full px-2 sm:px-0">
+              <div className="space-y-4 w-full">
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Display Name</label>
+                  <label className="text-sm font-medium text-[var(--text-primary)]">Display Name</label>
                   <input
-                    className="w-full px-3 py-2 bg-white/80 dark:bg-[#0b0f13]/80 border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 dark:focus:ring-blue-400/50 text-gray-900 dark:text-white transition-all duration-200"
+                    className="w-full px-3 py-2 bg-[var(--background)] border border-[var(--border)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 text-[var(--text-primary)] transition-colors"
                     value={formData.displayName}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, displayName: e.target.value })}
                     placeholder="Enter your display name"
@@ -162,9 +161,9 @@ export function ProfileCard({ profile, onUpdateProfile, isLoading }: ProfileCard
                 </div>
                 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Bio</label>
+                  <label className="text-sm font-medium text-[var(--text-primary)]">Bio</label>
                   <textarea
-                    className="w-full px-3 py-2 bg-white/80 dark:bg-[#0b0f13]/80 border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 dark:focus:ring-blue-400/50 text-gray-900 dark:text-white transition-all duration-200 resize-none"
+                    className="w-full px-3 py-2 bg-[var(--background)] border border-[var(--border)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 text-[var(--text-primary)] transition-colors resize-none"
                     value={formData.bio}
                     onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setFormData({ ...formData, bio: e.target.value })}
                     placeholder="Tell us about yourself..."
@@ -173,12 +172,12 @@ export function ProfileCard({ profile, onUpdateProfile, isLoading }: ProfileCard
                 </div>
                 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Location</label>
+                  <label className="text-sm font-medium text-[var(--text-primary)]">Location</label>
                   <input
-                    className="w-full px-3 py-2 bg-white/80 dark:bg-[#0b0f13]/80 border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 dark:focus:ring-blue-400/50 text-gray-900 dark:text-white transition-all duration-200"
+                    className="w-full px-3 py-2 bg-[var(--background)] border border-[var(--border)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 text-[var(--text-primary)] transition-colors"
                     value={formData.location}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, location: e.target.value })}
-                    placeholder="Where are you located?"
+                    placeholder="Your location"
                   />
                 </div>
               </div>
@@ -187,18 +186,18 @@ export function ProfileCard({ profile, onUpdateProfile, isLoading }: ProfileCard
         </div>
 
         {/* Quick Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 pt-4 border-t border-gray-200/50 dark:border-gray-700/50">
-          <div className="text-center p-2 sm:p-3 rounded-lg bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30">
-            <div className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-400 dark:to-blue-300 bg-clip-text text-transparent">{profile.totalEntries}</div>
-            <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Total Entries</div>
+        <div className="grid grid-cols-3 gap-3 pt-4 border-t border-[var(--border)]">
+          <div className="text-center p-3 rounded-xl bg-[var(--background)] border border-[var(--border)]">
+            <div className="text-xl font-bold text-[var(--primary)] font-en">{profile.totalEntries}</div>
+            <div className="text-xs text-[var(--text-secondary)]">Entries</div>
           </div>
-          <div className="text-center p-2 sm:p-3 rounded-lg bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/30 dark:to-orange-800/30">
-            <div className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-orange-600 to-orange-700 dark:from-orange-400 dark:to-orange-300 bg-clip-text text-transparent">{profile.currentStreak}</div>
-            <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Current Streak</div>
+          <div className="text-center p-3 rounded-xl bg-[var(--background)] border border-[var(--border)]">
+            <div className="text-xl font-bold text-orange-500 font-en">{profile.currentStreak}</div>
+            <div className="text-xs text-[var(--text-secondary)]">Streak</div>
           </div>
-          <div className="text-center p-2 sm:p-3 rounded-lg bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30">
-            <div className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-purple-600 to-purple-700 dark:from-purple-400 dark:to-purple-300 bg-clip-text text-transparent">{profile.achievements.length}</div>
-            <div className="text-sm text-gray-600 dark:text-gray-400">Achievements</div>
+          <div className="text-center p-3 rounded-xl bg-[var(--background)] border border-[var(--border)]">
+            <div className="text-xl font-bold text-[var(--secondary)] font-en">{profile.achievements.length}</div>
+            <div className="text-xs text-[var(--text-secondary)]">Badges</div>
           </div>
         </div>
       </CardContent>

@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Sun, Moon, Monitor } from 'lucide-react'
 import { useTheme } from '@/context/ThemeContext'
 import { Button } from './Button'
@@ -50,91 +50,114 @@ export function SimpleThemeToggle() {
   return (
     <motion.button
       onClick={toggleTheme}
-      className="relative w-10 h-10 rounded-full bg-[var(--surface)] border border-[var(--border)]/50 flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105 overflow-hidden"
+      className="relative w-12 h-12 rounded-xl bg-[var(--surface-elevated)] border border-[var(--border)] flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden group"
+      whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.92 }}
       aria-label="Toggle theme"
     >
+      {/* Background gradient on hover */}
       <motion.div
-        initial={false}
-        animate={{ 
-          rotate: resolvedTheme === 'dark' ? 180 : 0,
-          scale: resolvedTheme === 'dark' ? 1 : 1,
-          y: resolvedTheme === 'dark' ? 0 : -30,
-          opacity: resolvedTheme === 'dark' ? 1 : 0,
-        }}
-        transition={{ duration: 0.5, type: "spring", stiffness: 200 }}
-        className="absolute text-[var(--primary)]"
-      >
-        <Moon size={18} />
-      </motion.div>
-      
-      <motion.div
-        initial={false}
-        animate={{ 
-          rotate: resolvedTheme === 'dark' ? 0 : 0,
-          scale: resolvedTheme === 'dark' ? 1 : 1,
-          y: resolvedTheme === 'dark' ? 30 : 0,
-          opacity: resolvedTheme === 'dark' ? 0 : 1,
-        }}
-        transition={{ duration: 0.5, type: "spring", stiffness: 200 }}
-        className="absolute text-amber-500"
-      >
-        <Sun size={18} />
-      </motion.div>
-      
-      {/* Enhanced background indicator with glow effect */}
-      <motion.div
-        className="absolute inset-0 rounded-full"
-        animate={{
+        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        style={{
           background: resolvedTheme === 'dark' 
-            ? 'radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, transparent 80%)'
-            : 'radial-gradient(circle, rgba(251, 191, 36, 0.2) 0%, transparent 80%)'
+            ? 'radial-gradient(circle at center, rgba(251, 191, 36, 0.15) 0%, transparent 70%)'
+            : 'radial-gradient(circle at center, rgba(99, 102, 241, 0.15) 0%, transparent 70%)'
         }}
-        transition={{ duration: 0.5 }}
       />
       
-      {/* Orbiting particles around the sun/moon */}
-      {resolvedTheme === 'dark' ? (
-        <motion.div
-          className="absolute w-full h-full"
-          initial={false}
-          animate={{ rotate: 360 }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-        >
-          {[...Array(3)].map((_, i) => (
-            <motion.div 
-              key={i}
-              className="absolute w-1 h-1 bg-indigo-400/50 rounded-full"
-              style={{ 
-                top: `${25 + i * 15}%`, 
-                left: `${25 + i * 15}%`, 
-                transformOrigin: 'center center',
-                transform: `rotate(${i * 120}deg) translateX(${16}px)`
-              }}
-            />
-          ))}
-        </motion.div>
-      ) : (
-        <motion.div
-          className="absolute w-full h-full"
-          initial={false}
-          animate={{ rotate: 360 }}
-          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-        >
-          {[...Array(3)].map((_, i) => (
-            <motion.div 
-              key={i}
-              className="absolute w-1 h-1 bg-amber-400/70 rounded-full"
-              style={{ 
-                top: `${25 + i * 15}%`, 
-                left: `${25 + i * 15}%`, 
-                transformOrigin: 'center center',
-                transform: `rotate(${i * 120}deg) translateX(${16}px)`
-              }}
-            />
-          ))}
-        </motion.div>
-      )}
+      {/* Moon icon */}
+      <motion.div
+        initial={false}
+        animate={{ 
+          y: resolvedTheme === 'dark' ? 0 : -40,
+          opacity: resolvedTheme === 'dark' ? 1 : 0,
+          rotate: resolvedTheme === 'dark' ? 0 : -90,
+        }}
+        transition={{ duration: 0.4, type: "spring", stiffness: 300, damping: 20 }}
+        className="absolute text-indigo-400"
+      >
+        <Moon size={20} />
+      </motion.div>
+      
+      {/* Sun icon */}
+      <motion.div
+        initial={false}
+        animate={{ 
+          y: resolvedTheme === 'dark' ? 40 : 0,
+          opacity: resolvedTheme === 'dark' ? 0 : 1,
+          rotate: resolvedTheme === 'dark' ? 90 : 0,
+        }}
+        transition={{ duration: 0.4, type: "spring", stiffness: 300, damping: 20 }}
+        className="absolute text-amber-500"
+      >
+        <Sun size={20} />
+      </motion.div>
+      
+      {/* Rays animation for sun */}
+      <AnimatePresence>
+        {resolvedTheme !== 'dark' && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.3 }}
+            className="absolute inset-0 flex items-center justify-center pointer-events-none"
+          >
+            {[...Array(8)].map((_, i) => (
+              <motion.div 
+                key={i}
+                className="absolute w-0.5 h-1.5 bg-amber-400/40 rounded-full"
+                style={{ 
+                  transform: `rotate(${i * 45}deg) translateY(-16px)`
+                }}
+                animate={{
+                  opacity: [0.4, 0.8, 0.4],
+                  height: ['6px', '8px', '6px'],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  delay: i * 0.1,
+                }}
+              />
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+      
+      {/* Stars animation for moon */}
+      <AnimatePresence>
+        {resolvedTheme === 'dark' && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3, delay: 0.1 }}
+            className="absolute inset-0 pointer-events-none"
+          >
+            {[
+              { top: '20%', left: '20%', delay: 0 },
+              { top: '25%', right: '22%', delay: 0.2 },
+              { bottom: '25%', left: '25%', delay: 0.4 },
+            ].map((star, i) => (
+              <motion.div 
+                key={i}
+                className="absolute w-1 h-1 bg-indigo-300/60 rounded-full"
+                style={{ top: star.top, left: star.left, right: star.right, bottom: star.bottom }}
+                animate={{
+                  opacity: [0.3, 1, 0.3],
+                  scale: [0.8, 1.2, 0.8],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  delay: star.delay,
+                }}
+              />
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.button>
   )
 }

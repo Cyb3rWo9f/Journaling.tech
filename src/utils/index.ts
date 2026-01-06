@@ -101,3 +101,6 @@ export function throttle<T extends (...args: any[]) => any>(
     }
   }
 }
+
+// Re-export logger
+export { logger } from './logger'

@@ -1,4 +1,5 @@
 export { SettingsPage } from './SettingsPage'
 export { ProfileCard } from './ProfileCard'
+export { FlippableProfileCard } from './FlippableProfileCard'
 export { StreakCard } from './StreakCard'
 export { AchievementBadges } from './AchievementBadges'
