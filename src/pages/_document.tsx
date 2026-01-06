@@ -11,7 +11,10 @@ export default function Document() {
           rel="stylesheet" 
         />
         <meta name="description" content="A beautiful AI-powered journaling application for reflection and personal growth" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/icon-512.svg" />
+        <meta name="theme-color" content="#8B5CF6" />
         <script
           dangerouslySetInnerHTML={{
             __html: `
