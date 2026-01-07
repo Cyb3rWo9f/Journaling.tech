@@ -404,7 +404,7 @@ export function JournalEditor({ entry, onSave }: JournalEditorProps) {
             {/* Mobile textarea */}
             <textarea
               value={content}
-              placeholder={`What's on your mind today? ✨\n\nWrite about your day, capture your thoughts, or reflect on what matters most.\n\nUse #hashtags like #gratitude or #goals to organize your entries.`}
+              placeholder={`What's on your mind today?\n\nWrite about your day, capture your thoughts, or reflect on what matters most.\n\nUse #hashtags like #gratitude or #goals to organize your entries.`}
               onChange={handleContentChange}
               rows={12}
               className="md:hidden w-full p-4 bg-transparent border-none outline-none resize-none text-[var(--text-primary)] placeholder:text-[var(--text-muted)]/60 text-base leading-relaxed selection:bg-[var(--primary)]/20 scrollbar-thin overflow-y-auto h-[320px]"
@@ -413,7 +413,7 @@ export function JournalEditor({ entry, onSave }: JournalEditorProps) {
             {/* Desktop textarea */}
             <textarea
               value={content}
-              placeholder={`Begin your journal entry here...\n\nThis is your private sanctuary for self-reflection and personal growth. Write about your day, capture meaningful moments, or explore your thoughts freely.\n\n💡 Pro tip: Use #hashtags to organize your entries — try #gratitude, #goals, #reflection, or #ideas. Your AI companion will analyze your writing to provide personalized insights.`}
+              placeholder={`Begin your journal entry here...\n\nThis is your private sanctuary for self-reflection and personal growth.\nWrite about your day, capture meaningful moments, or explore your thoughts freely.\n\n💡 Pro tip: Use #hashtags to organize your entries — try #gratitude, #goals, #reflection, or #ideas.\n\nYour AI companion will analyze your writing to provide personalized insights.`}
               onChange={handleContentChange}
               rows={12}
               className="hidden md:block w-full p-4 bg-transparent border-none outline-none resize-none text-[var(--text-primary)] placeholder:text-[var(--text-muted)]/60 text-base leading-relaxed selection:bg-[var(--primary)]/20 scrollbar-thin overflow-y-auto h-[320px]"
