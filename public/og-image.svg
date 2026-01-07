@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+    <linearGradient id="sparkleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FACC15"/>
+      <stop offset="100%" stop-color="#F97316"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bgGrad)"/>
+  
+  <!-- Decorative circles -->
+  <circle cx="100" cy="100" r="200" fill="#6366f1" opacity="0.1"/>
+  <circle cx="1100" cy="530" r="250" fill="#06b6d4" opacity="0.1"/>
+  
+  <!-- Logo icon -->
+  <g transform="translate(480, 180)">
+    <rect width="120" height="120" rx="28" fill="url(#accentGrad)"/>
+    <g transform="translate(26, 26) scale(2.8)" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 19l7-7 3 3-7 7-4 1 1-4z"/>
+      <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/>
+      <path d="M2 2l7.586 7.586"/>
+      <circle cx="11" cy="11" r="2" fill="white"/>
+    </g>
+    <!-- Sparkle -->
+    <circle cx="108" cy="12" r="18" fill="url(#sparkleGrad)"/>
+    <g transform="translate(108, 12)" fill="white">
+      <path d="M0 -8 L0 8 M-8 0 L8 0" stroke="white" stroke-width="3" stroke-linecap="round"/>
+    </g>
+  </g>
+  
+  <!-- Title -->
+  <text x="600" y="380" font-family="system-ui, -apple-system, sans-serif" font-size="72" font-weight="bold" fill="white" text-anchor="middle">Journaling</text>
+  
+  <!-- Subtitle -->
+  <text x="600" y="440" font-family="system-ui, -apple-system, sans-serif" font-size="28" fill="#94a3b8" text-anchor="middle">AI-Powered Personal Journaling</text>
+  
+  <!-- Tagline -->
+  <text x="600" y="520" font-family="system-ui, -apple-system, sans-serif" font-size="22" fill="#64748b" text-anchor="middle">Transform your thoughts into insights</text>
+  
+  <!-- URL -->
+  <text x="600" y="590" font-family="system-ui, -apple-system, sans-serif" font-size="20" fill="#6366f1" text-anchor="middle">journaling.tech</text>
+</svg>

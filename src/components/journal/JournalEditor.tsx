@@ -401,12 +401,22 @@ export function JournalEditor({ entry, onSave }: JournalEditorProps) {
 
           {/* Content Editor */}
           <div className="relative bg-[var(--background)]">
+            {/* Mobile textarea */}
             <textarea
               value={content}
-              placeholder="Begin your journal entry here. This is your private sanctuary for self-reflection, personal growth, and meaningful documentation of your life's journey. Take a moment to pause and reflect on your day. What experiences shaped your thoughts today? What emotions did you navigate through? Writing about your feelings helps process them and gain clarity. Use #hashtags to organize your entries effectively — try #gratitude, #goals, #reflection, #work, or #health. Consider exploring: What made today meaningful? What challenges did you face? What are you grateful for? What lessons did today teach you? What intentions do you want to set for tomorrow? Remember, there's no right or wrong way to journal. Write freely and let your thoughts flow naturally."
+              placeholder={`What's on your mind today? ✨\n\nWrite about your day, capture your thoughts, or reflect on what matters most.\n\nUse #hashtags like #gratitude or #goals to organize your entries.`}
               onChange={handleContentChange}
               rows={12}
-              className="w-full p-4 bg-transparent border-none outline-none resize-none text-[var(--text-primary)] placeholder:text-[var(--text-muted)]/60 text-base leading-relaxed selection:bg-[var(--primary)]/20 scrollbar-thin overflow-y-auto h-[320px]"
+              className="md:hidden w-full p-4 bg-transparent border-none outline-none resize-none text-[var(--text-primary)] placeholder:text-[var(--text-muted)]/60 text-base leading-relaxed selection:bg-[var(--primary)]/20 scrollbar-thin overflow-y-auto h-[320px]"
+              style={{ fontSize: '15px', lineHeight: '1.7' }}
+            />
+            {/* Desktop textarea */}
+            <textarea
+              value={content}
+              placeholder={`Begin your journal entry here...\n\nThis is your private sanctuary for self-reflection and personal growth. Write about your day, capture meaningful moments, or explore your thoughts freely.\n\n💡 Pro tip: Use #hashtags to organize your entries — try #gratitude, #goals, #reflection, or #ideas. Your AI companion will analyze your writing to provide personalized insights.`}
+              onChange={handleContentChange}
+              rows={12}
+              className="hidden md:block w-full p-4 bg-transparent border-none outline-none resize-none text-[var(--text-primary)] placeholder:text-[var(--text-muted)]/60 text-base leading-relaxed selection:bg-[var(--primary)]/20 scrollbar-thin overflow-y-auto h-[320px]"
               style={{ fontSize: '15px', lineHeight: '1.7' }}
             />
 

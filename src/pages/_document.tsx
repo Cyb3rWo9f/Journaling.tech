@@ -11,9 +11,17 @@ export default function Document() {
           rel="stylesheet" 
         />
         <meta name="description" content="A beautiful AI-powered journaling application for reflection and personal growth" />
+        <meta name="theme-color" content="#6366f1" />
+        <meta name="application-name" content="Journaling" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="Journaling" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="mobile-web-app-capable" content="yes" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/icon-512.svg" />
+        <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#8B5CF6" />
         <script
           dangerouslySetInnerHTML={{

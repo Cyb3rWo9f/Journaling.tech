@@ -1,0 +1,13 @@
+# Robots.txt for Journaling.tech
+# https://journaling.tech
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://journaling.tech/sitemap.xml
+
+# Disallow private/API routes
+Disallow: /api/
+Disallow: /_next/
+Disallow: /embed/

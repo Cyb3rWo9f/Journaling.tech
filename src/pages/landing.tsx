@@ -25,14 +25,61 @@ function LandingPage() {
 
         <div className="relative z-10 flex flex-col min-h-screen">
           <Head>
-            <title>Journling - AI-Powered Personal Journaling</title>
-            <meta name="description" content="Transform your thoughts into insights with AI-powered journaling. Track emotions, discover patterns, and grow personally with intelligent analysis." />
+            <title>Journaling - AI-Powered Personal Journaling | Track Emotions & Grow</title>
+            <meta name="description" content="Transform your thoughts into insights with AI-powered journaling. Track emotions, discover patterns, and grow personally with intelligent analysis. Free to use, private & secure." />
+            <meta name="keywords" content="journaling, AI journal, mood tracking, personal growth, emotion tracker, daily journal, mental health, self-reflection, diary app, mindfulness" />
             <meta name="viewport" content="width=device-width, initial-scale=1" />
-            <link rel="icon" href="/favicon.ico" />
-            <meta property="og:title" content="Journling - AI-Powered Personal Journaling" />
-            <meta property="og:description" content="Transform your thoughts into insights with AI-powered journaling" />
+            <meta name="author" content="Journaling.tech" />
+            <link rel="canonical" href="https://journaling.tech" />
+            
+            {/* Open Graph / Facebook */}
             <meta property="og:type" content="website" />
+            <meta property="og:url" content="https://journaling.tech" />
+            <meta property="og:title" content="Journaling - AI-Powered Personal Journaling" />
+            <meta property="og:description" content="Transform your thoughts into insights with AI-powered journaling. Track emotions, discover patterns, and grow personally." />
+            <meta property="og:image" content="https://journaling.tech/og-image.svg" />
+            <meta property="og:site_name" content="Journaling" />
+            <meta property="og:locale" content="en_US" />
+            
+            {/* Twitter */}
             <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:url" content="https://journaling.tech" />
+            <meta name="twitter:title" content="Journaling - AI-Powered Personal Journaling" />
+            <meta name="twitter:description" content="Transform your thoughts into insights with AI-powered journaling." />
+            <meta name="twitter:image" content="https://journaling.tech/og-image.svg" />
+            
+            {/* Additional SEO */}
+            <meta name="robots" content="index, follow" />
+            <meta name="googlebot" content="index, follow" />
+            <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+            
+            {/* Structured Data */}
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify({
+                  "@context": "https://schema.org",
+                  "@type": "WebApplication",
+                  "name": "Journaling",
+                  "url": "https://journaling.tech",
+                  "description": "AI-powered personal journaling platform for tracking emotions and personal growth",
+                  "applicationCategory": "LifestyleApplication",
+                  "operatingSystem": "Web",
+                  "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "USD"
+                  },
+                  "featureList": [
+                    "AI-powered insights",
+                    "Mood tracking",
+                    "Progress analytics",
+                    "Private & secure",
+                    "Auto-save"
+                  ]
+                })
+              }}
+            />
           </Head>
 
           {/* Navigation */}

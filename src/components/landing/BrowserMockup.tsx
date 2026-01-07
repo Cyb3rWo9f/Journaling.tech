@@ -269,9 +269,8 @@ function EditorView({ typedText, isTyping, selectedMood, isSaving }: {
         {/* Quote Banner */}
         <div className="text-center mb-3 py-2 px-4 bg-[var(--surface-elevated)] rounded-xl border border-[var(--border)]">
           <p className="text-[11px] text-[var(--text-primary)]">
-            "<span className="font-medium">Carpe diem</span>" — <span className="bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] bg-clip-text text-transparent font-semibold">seize the day, embrace every moment</span>
+            <span className="bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] bg-clip-text text-transparent font-semibold">Capture moments, track progress, unlock insights</span>
           </p>
-          <p className="text-[9px] text-[var(--text-secondary)] mt-0.5">Your journey of self-discovery begins with a single thought</p>
         </div>
 
         {/* Content Grid */}
@@ -553,9 +552,8 @@ function EntriesView() {
         {/* Quote Banner */}
         <div className="text-center mb-4 py-2 px-4 bg-[var(--surface-elevated)] rounded-xl border border-[var(--border)]">
           <p className="text-[11px] text-[var(--text-primary)]">
-            "<span className="font-medium">Carpe diem</span>" — <span className="bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] bg-clip-text text-transparent font-semibold">seize the day, embrace every moment</span>
+            <span className="bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] bg-clip-text text-transparent font-semibold">Capture moments, track progress, unlock insights</span>
           </p>
-          <p className="text-[9px] text-[var(--text-secondary)] mt-0.5">Your journey of self-discovery begins with a single thought</p>
         </div>
 
         {/* Entries Header */}
@@ -726,9 +724,8 @@ function InsightsView() {
         {/* Quote Banner */}
         <div className="text-center mb-3 py-2 px-4 bg-[var(--surface-elevated)] rounded-xl border border-[var(--border)]">
           <p className="text-[11px] text-[var(--text-primary)]">
-            "<span className="font-medium">Carpe diem</span>" — <span className="bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] bg-clip-text text-transparent font-semibold">seize the day, embrace every moment</span>
+            <span className="bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] bg-clip-text text-transparent font-semibold">Capture moments, track progress, unlock insights</span>
           </p>
-          <p className="text-[9px] text-[var(--text-secondary)] mt-0.5">Your journey of self-discovery begins with a single thought</p>
         </div>
 
         {/* Insights Header */}
