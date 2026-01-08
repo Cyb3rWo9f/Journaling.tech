@@ -58,6 +58,28 @@ const nextConfig = {
           },
         ],
       },
+      {
+        // Public Profile API - allow CORS for embeds and external access
+        source: '/api/profile/:path*',
+        headers: [
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: '*',
+          },
+          {
+            key: 'Access-Control-Allow-Methods',
+            value: 'GET, OPTIONS',
+          },
+          {
+            key: 'Access-Control-Allow-Headers',
+            value: 'Content-Type',
+          },
+          {
+            key: 'Cache-Control',
+            value: 's-maxage=60, stale-while-revalidate',
+          },
+        ],
+      },
     ]
   },
 }
