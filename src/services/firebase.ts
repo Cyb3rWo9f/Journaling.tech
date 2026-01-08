@@ -122,6 +122,32 @@ export class FirebaseJournalService {
   // Path: /users/{userId}/entries/{entryId}
   // ============================================================
 
+  /**
+   * Update the entry count in the public profile
+   * This should be called after creating or deleting entries
+   */
+  async syncEntryCountToPublicProfile(): Promise<void> {
+    if (!this.userId) return
+    
+    try {
+      // Get the actual count of entries
+      const entriesCollection = this.getUserCollection('entries')
+      const entriesSnapshot = await getDocs(entriesCollection)
+      const totalEntries = entriesSnapshot.size
+      
+      // Update the public profile with the new count
+      const publicProfileDoc = doc(db, 'publicProfiles', this.userId)
+      await setDoc(publicProfileDoc, {
+        totalEntries,
+        updatedAt: Timestamp.now(),
+      }, { merge: true })
+      
+      console.log(`📊 Public profile entry count synced: ${totalEntries}`)
+    } catch (error) {
+      console.error('Error syncing entry count to public profile:', error)
+    }
+  }
+
   async createEntry(entry: Omit<JournalEntry, 'id'>): Promise<JournalEntry> {
     try {
       const entriesCollection = this.getUserCollection('entries')
@@ -137,6 +163,9 @@ export class FirebaseJournalService {
       
       console.log('📤 Creating journal entry...')
       const docRef = await addDoc(entriesCollection, entryData)
+      
+      // Sync entry count to public profile
+      await this.syncEntryCountToPublicProfile()
       
       return {
         ...entry,
@@ -174,6 +203,9 @@ export class FirebaseJournalService {
       const entryDoc = this.getUserDoc('entries', entryId)
       await deleteDoc(entryDoc)
       console.log('✅ Firebase: Entry deleted successfully')
+      
+      // Sync entry count to public profile
+      await this.syncEntryCountToPublicProfile()
     } catch (error) {
       console.error('❌ Firebase: Error deleting entry:', error)
       throw new Error('Failed to delete journal entry')
