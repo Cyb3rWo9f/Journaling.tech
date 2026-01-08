@@ -74,8 +74,8 @@ export default async function handler(
         isPublic: true,
       }
 
-      // Set cache headers for better performance
-      res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate')
+      // Set cache headers - short cache for quick updates
+      res.setHeader('Cache-Control', 's-maxage=10, stale-while-revalidate=30')
       
       return res.status(200).json(publicProfile)
     }

@@ -123,29 +123,111 @@ export class FirebaseJournalService {
   // ============================================================
 
   /**
-   * Update the entry count in the public profile
-   * This should be called after creating or deleting entries
+   * Sync all public profile stats (entries, streaks) 
+   * This is called automatically after creating or deleting entries
    */
-  async syncEntryCountToPublicProfile(): Promise<void> {
+  async syncPublicProfileStats(): Promise<void> {
     if (!this.userId) return
     
     try {
-      // Get the actual count of entries
+      // Get all entries to calculate stats
       const entriesCollection = this.getUserCollection('entries')
       const entriesSnapshot = await getDocs(entriesCollection)
       const totalEntries = entriesSnapshot.size
       
-      // Update the public profile with the new count
+      // Calculate streaks from entries
+      const entries = entriesSnapshot.docs.map(doc => {
+        const data = doc.data()
+        return {
+          createdAt: data.createdAt?.toDate?.() || new Date(data.createdAt)
+        }
+      })
+      
+      // Sort by date descending
+      entries.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+      
+      let currentStreak = 0
+      let longestStreak = 0
+      
+      if (entries.length > 0) {
+        // Get unique dates
+        const uniqueDates = [...new Set(entries.map(e => {
+          const d = new Date(e.createdAt)
+          return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`
+        }))]
+        
+        // Calculate current streak
+        const today = new Date()
+        today.setHours(0, 0, 0, 0)
+        const yesterday = new Date(today)
+        yesterday.setDate(yesterday.getDate() - 1)
+        
+        const mostRecentEntry = entries[0].createdAt
+        const mostRecentDate = new Date(mostRecentEntry)
+        mostRecentDate.setHours(0, 0, 0, 0)
+        
+        // Check if most recent entry is today or yesterday
+        if (mostRecentDate.getTime() === today.getTime() || mostRecentDate.getTime() === yesterday.getTime()) {
+          currentStreak = 1
+          let checkDate = new Date(mostRecentDate)
+          checkDate.setDate(checkDate.getDate() - 1)
+          
+          for (let i = 1; i < uniqueDates.length; i++) {
+            const entryDate = entries.find(e => {
+              const d = new Date(e.createdAt)
+              d.setHours(0, 0, 0, 0)
+              return d.getTime() === checkDate.getTime()
+            })
+            if (entryDate) {
+              currentStreak++
+              checkDate.setDate(checkDate.getDate() - 1)
+            } else {
+              break
+            }
+          }
+        }
+        
+        // Calculate longest streak
+        let tempStreak = 1
+        const sortedDates = entries
+          .map(e => {
+            const d = new Date(e.createdAt)
+            d.setHours(0, 0, 0, 0)
+            return d.getTime()
+          })
+          .filter((date, index, self) => self.indexOf(date) === index)
+          .sort((a, b) => a - b)
+        
+        for (let i = 1; i < sortedDates.length; i++) {
+          const diff = sortedDates[i] - sortedDates[i - 1]
+          if (diff === 86400000) { // 1 day in ms
+            tempStreak++
+          } else {
+            longestStreak = Math.max(longestStreak, tempStreak)
+            tempStreak = 1
+          }
+        }
+        longestStreak = Math.max(longestStreak, tempStreak, currentStreak)
+      }
+      
+      // Update the public profile with all stats
       const publicProfileDoc = doc(db, 'publicProfiles', this.userId)
       await setDoc(publicProfileDoc, {
         totalEntries,
+        currentStreak,
+        longestStreak,
         updatedAt: Timestamp.now(),
       }, { merge: true })
       
-      console.log(`📊 Public profile entry count synced: ${totalEntries}`)
+      console.log(`📊 Public profile synced: ${totalEntries} entries, ${currentStreak} current streak, ${longestStreak} longest streak`)
     } catch (error) {
-      console.error('Error syncing entry count to public profile:', error)
+      console.error('Error syncing public profile stats:', error)
     }
+  }
+
+  // Keep old function name for backward compatibility
+  async syncEntryCountToPublicProfile(): Promise<void> {
+    return this.syncPublicProfileStats()
   }
 
   async createEntry(entry: Omit<JournalEntry, 'id'>): Promise<JournalEntry> {

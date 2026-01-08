@@ -228,10 +228,6 @@ export function SettingsPage() {
             avatar: user.photoURL || undefined,
             joinedDate: user.metadata?.creationTime || new Date().toISOString(),
           })
-          
-          // Also sync entry count to public profile
-          await firebaseJournalService.syncEntryCountToPublicProfile()
-          
           console.log('✅ Profile synced to publicProfiles')
         } catch (error) {
           console.error('Error loading/syncing profile:', error)
